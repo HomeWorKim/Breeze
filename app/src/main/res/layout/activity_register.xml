@@ -2,33 +2,43 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="bronzetrio.ojakgyo.Register">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <Button
-        android:id="@+id/register"
+    android:orientation="vertical"
+    >
+
+
+    <EditText
+        android:id="@+id/id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:singleLine="true"
+        android:maxLength="100"
+        />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:maxLength="100"
         />
     <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"/>
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginStart="0dp"
-        android:background="@drawable/main_menu_edge"
-        app:menu="@menu/main_menu"
-        android:layout_gravity="bottom"/>
+        android:text="register"
+        android:id="@+id/register"
+        />
 </LinearLayout>
 </android.support.constraint.ConstraintLayout>
