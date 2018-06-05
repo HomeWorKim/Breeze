@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private Button register_btn;
     private Button login_btn;
+    private Button chat_btn;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         register_btn = (Button)findViewById(R.id.register);
         login_btn = (Button)findViewById(R.id.login);
+        chat_btn = (Button)findViewById(R.id.chatroom);
 
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
@@ -56,10 +58,15 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Login.class);
                     startActivity(intent);
                 }
+                else if(i == R.id.chatroom){
+                    Intent intent = new Intent(MainActivity.this, Chat_Room.class);
+                    startActivity(intent);
+                }
             }
         };
         register_btn.setOnClickListener(listener);
         login_btn.setOnClickListener(listener);
+        chat_btn.setOnClickListener(listener);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

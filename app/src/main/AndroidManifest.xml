@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register" />
-        <activity android:name=".Login"></activity>
+        <activity android:name=".Login" />
+        <activity android:name=".Chat_Room"></activity>
     </application>
 
 </manifest>
