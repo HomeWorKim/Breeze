@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class Login extends AppCompatActivity {
     private EditText Id_box;
     private EditText password;
-    private TextView login_btn;
+    private Button login_btn;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class Login extends AppCompatActivity {
 
         Id_box = (EditText)findViewById(R.id.Id);
         password = (EditText)findViewById(R.id.password);
-        login_btn = (TextView)findViewById(R.id.login);
+        login_btn = (Button)findViewById(R.id.login);
 
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
