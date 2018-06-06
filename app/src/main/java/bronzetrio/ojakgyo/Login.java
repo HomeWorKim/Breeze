@@ -25,6 +25,7 @@ public class Login extends AppCompatActivity {
     private EditText Id_box;
     private EditText password;
     private Button login_btn;
+    private Button register_btn;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class Login extends AppCompatActivity {
         Id_box = (EditText)findViewById(R.id.Id);
         password = (EditText)findViewById(R.id.password);
         login_btn = (Button)findViewById(R.id.login);
+        register_btn = (Button)findViewById(R.id.register);
 
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
@@ -44,9 +46,14 @@ public class Login extends AppCompatActivity {
                     String pwd = password.getText().toString().trim();
                     signIn(email,pwd);
                 }
+                else if(i == R.id.register){
+                    Intent intent = new Intent(Login.this, Register.class);
+                    startActivity(intent);
+                }
             }
         };
         login_btn.setOnClickListener(listener);
+        register_btn.setOnClickListener(listener);
         //Firebase instance
         mAuth = FirebaseAuth.getInstance();
     }

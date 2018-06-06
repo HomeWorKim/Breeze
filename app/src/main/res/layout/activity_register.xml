@@ -5,9 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="bronzetrio.ojakgyo.Register">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     >
 
@@ -51,25 +54,6 @@
         android:layout_marginRight="30dp"
         />
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:background="@android:color/darker_gray"/>-->
-
-    <!--<EditText-->
-        <!--android:id="@+id/id"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:ems="10"-->
-        <!--android:inputType="textPersonName"-->
-        <!--android:text="Id@email.com"-->
-        <!--android:singleLine="true"-->
-        <!--android:maxLength="100"-->
-        <!--/>-->
-
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
@@ -94,23 +78,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         />
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:background="@android:color/darker_gray"/>-->
-    <!--<EditText-->
-        <!--android:id="@+id/password"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:ems="10"-->
-        <!--android:inputType="textPassword"-->
-        <!--android:singleLine="true"-->
-        <!--android:maxLength="100"-->
-        <!--/>-->
 
     <EditText
         android:id="@+id/name"
@@ -137,24 +104,6 @@
         android:layout_marginRight="30dp"
         />
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:background="@android:color/darker_gray"/>-->
-    <!--<EditText-->
-        <!--android:id="@+id/name"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:ems="10"-->
-        <!--android:inputType="textPersonName"-->
-        <!--android:text="Name"-->
-        <!--android:singleLine="true"-->
-        <!--android:maxLength="100"-->
-        <!--/>-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -173,10 +122,26 @@
 
         <Spinner
             android:id="@+id/Birthday"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Spinner>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="월"/>
+        <Spinner
+            android:id="@+id/Month"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content">
+        </Spinner>
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:text="일"/>
+        <Spinner
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Spinner>
     </LinearLayout>
 
     <LinearLayout
@@ -186,7 +151,14 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         />
-
+<ImageView
+    android:id="@+id/Profile_img"
+    android:layout_width="250dp"
+    android:layout_height="250dp"
+    android:scaleType="fitXY"
+    android:src="@drawable/ic_person"
+    android:layout_gravity="center"
+    />
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
@@ -201,12 +173,7 @@
         android:textAlignment="center"
         android:textSize="16dp" />
 
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="register"-->
-        <!--android:id="@+id/register"-->
-        <!--/>-->
 
 </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

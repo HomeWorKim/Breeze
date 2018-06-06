@@ -1,7 +1,10 @@
 package bronzetrio.ojakgyo;
 
-import android.app.DatePickerDialog;
+import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,9 +25,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.lang.reflect.Array;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,10 +39,17 @@ public class Register extends AppCompatActivity {
     private Button register;
     private FirebaseAuth mAuth;
     private ArrayAdapter spinnerAdapter;
+    private ArrayAdapter spinnerAdapter2;
+    private ArrayAdapter spinnerAdapter3;
     private ArrayList list1;
     private ArrayList list2;
     private ArrayList list3;
     private Spinner spinner;
+    private Spinner spinner2;
+    private Spinner spinner3;
+    private ImageView profile_img;
+    final int PICTURE_REQUEST_CODE = 100;
+    private Bitmap bmp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +59,9 @@ public class Register extends AppCompatActivity {
         password = (EditText)findViewById(R.id.password);
         register = (Button)findViewById(R.id.register);
         spinner = (Spinner)findViewById(R.id.Birthday);
+        spinner2 = (Spinner)findViewById(R.id.Month);
+        spinner3 = (Spinner)findViewById(R.id.day);
+        profile_img = (ImageView)findViewById(R.id.Profile_img);
 
         // 스피너에 들어갈 날짜 배열 초기화
         list1 = Year_Add();
@@ -58,13 +71,19 @@ public class Register extends AppCompatActivity {
 
         //스피너 어댑터 초기화.
         spinnerAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list1);
+        spinnerAdapter2 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list2);
+        spinnerAdapter3 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list3);
+
         spinner.setAdapter(spinnerAdapter);
+        spinner2.setAdapter(spinnerAdapter2);
+        spinner3.setAdapter(spinnerAdapter3);
 
         //spiner event listener
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -73,6 +92,41 @@ public class Register extends AppCompatActivity {
             }
         });
 
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        profile_img.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //출처: http://ghj1001020.tistory.com/368 [혁준 블로그]
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"),PICTURE_REQUEST_CODE);
+            }
+        });
         register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -194,5 +248,44 @@ public class Register extends AppCompatActivity {
             a.add(Integer.toString(i));
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == PICTURE_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                //기존 이미지 지우기.
+                profile_img.setImageResource(0);
+                Uri uri = data.getData();
+                ClipData clipData = data.getClipData();
+
+                //구글 드라이브같은데서 가져오는 걸로 예상됨.
+                if(clipData != null){
+                    try{
+                        bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    }catch(FileNotFoundException e){
+                        e.printStackTrace();
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
+                    profile_img.setImageBitmap(bmp);
+                }
+                //사진 폴더에서 선택할때.
+                else if(uri != null){
+                    try{
+                        bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    }catch(FileNotFoundException e){
+                        e.printStackTrace();
+                    }catch(IOException e){
+                       e.printStackTrace();
+                    }
+                    profile_img.setImageBitmap(bmp);
+                }
+            }
+            //사진 선택 안했을때?
+            else{
+
+            }
+        }
     }
 }
