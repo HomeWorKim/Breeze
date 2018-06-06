@@ -8,8 +8,24 @@
     tools:context=".MainActivity">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        />
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"/>
+    <Button
+        android:id="@+id/chatroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chatroom"/>
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -17,7 +33,6 @@
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:background="@drawable/main_menu_edge"
-        android:layout_weight="end"
         app:menu="@menu/main_menu"
         android:layout_gravity="bottom"/>
 </LinearLayout>
