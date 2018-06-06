@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import java.util.regex.Pattern;
 public class Register extends AppCompatActivity {
     private EditText id;
     private EditText password;
+    private EditText name;
     private Button register;
     private FirebaseAuth mAuth;
     private ArrayAdapter spinnerAdapter;
@@ -49,7 +52,14 @@ public class Register extends AppCompatActivity {
     private Spinner spinner3;
     private ImageView profile_img;
     final int PICTURE_REQUEST_CODE = 100;
-    private Bitmap bmp;
+    private DatabaseReference databaseReference;
+
+    //데이터 베이스에 들어갈 데이터.
+    private String Birth_Year="";
+    private String Birth_Month="";
+    private String Birth_Day="";
+    private String Name="";
+    private Bitmap bmp=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +67,15 @@ public class Register extends AppCompatActivity {
 
         id = (EditText)findViewById(R.id.id);
         password = (EditText)findViewById(R.id.password);
+        name = (EditText)findViewById(R.id.name);
         register = (Button)findViewById(R.id.register);
         spinner = (Spinner)findViewById(R.id.Birthday);
         spinner2 = (Spinner)findViewById(R.id.Month);
         spinner3 = (Spinner)findViewById(R.id.day);
         profile_img = (ImageView)findViewById(R.id.Profile_img);
+
+        //database 객체 가져오기.
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         // 스피너에 들어갈 날짜 배열 초기화
         list1 = Year_Add();
@@ -78,12 +92,12 @@ public class Register extends AppCompatActivity {
         spinner2.setAdapter(spinnerAdapter2);
         spinner3.setAdapter(spinnerAdapter3);
 
-        //spiner event listener
+        //생일 중 년도 데이터 선택.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+                Birth_Year =String.valueOf(spinner.getItemAtPosition(position));
+                //Toast.makeText(Register.this,"선택된 아이템 : "+Birth_Year,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -92,11 +106,12 @@ public class Register extends AppCompatActivity {
             }
         });
 
+        //생일 중 월 선택.
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Birth_Month =String.valueOf(spinner2.getItemAtPosition(position));
                 //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -105,9 +120,11 @@ public class Register extends AppCompatActivity {
             }
         });
 
+        //생일 중 일 선택.
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Birth_Day =String.valueOf(spinner3.getItemAtPosition(position));
                 //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
             }
 
@@ -117,21 +134,32 @@ public class Register extends AppCompatActivity {
             }
         });
 
+        //이미지 눌렀을 때,
         profile_img.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 //출처: http://ghj1001020.tistory.com/368 [혁준 블로그]
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,false);
                 intent.setType("image/*");
                 startActivityForResult(Intent.createChooser(intent,"Select Picture"),PICTURE_REQUEST_CODE);
             }
         });
+        //가입 버튼 눌렀을 때,
         register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 String email = id.getText().toString().trim();
                 String pwd = password.getText().toString().trim();
+                Name = name.getText().toString().trim();
+                if(Data_Empty() == 0){  //이름이 비어 있다면.
+                    Toast.makeText(Register.this, "이름을 적어주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(Data_Empty() == 1){
+                    Toast.makeText(Register.this, "사진을 넣어주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 createID(email,pwd);
             }
         });
@@ -168,7 +196,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //회원 가입 유효 한지 확인.
+    //회원 가입(아이디와 비밀번호 만) 유효 한지 확인.
     private boolean validateForm(String email, String password) {
         Pattern p = Pattern.compile("(^.*(?=.{6,100})(?=.*[0-9])(?=.*[a-zA-Z]).*$)");
         Matcher m = p.matcher(email);
@@ -185,10 +213,10 @@ public class Register extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "비밀번호 입력해주세요!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (!(m.find() && !email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))){
-            Toast.makeText(getApplicationContext(), "한글이 포함 되었습니다!", Toast.LENGTH_SHORT).show();
-//            return false;
-        }
+        //if (!(m.find() && !email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))){
+        //    Toast.makeText(getApplicationContext(), "한글이 포함 되었습니다!", Toast.LENGTH_SHORT).show();
+        //    return false;
+        //}
         if (password.length() < 6) {
             Toast.makeText(getApplicationContext(), "비밀번호는 최소 6자리 이상 입니다.", Toast.LENGTH_SHORT).show();
             return false;
@@ -196,12 +224,24 @@ public class Register extends AppCompatActivity {
 
         return true;
     }
-
+    private int Data_Empty(){
+        if(Name.isEmpty()){
+            return 0;
+        }
+        if(bmp == null){
+            return 1;
+        }
+        return 2;
+    }
     void createID(String mail, String Password){
-        String email = mail;
+        final String email = mail;
         String pwd = Password;
         Log.d("tag","email : "+id);
         Log.d("tag","pwd : "+ password);
+        AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
+
+        if(true)return;
+
         if(!validateForm(email,pwd)){
             return;
         }
@@ -210,16 +250,18 @@ public class Register extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
                 //Log.d("TAG", "error" + task.getException());
-                if(task.isSuccessful()){
-                    Toast.makeText(Register.this, "회원 가입을 성공하셨습니다!",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Register.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else{
-                    Toast.makeText(Register.this, "등록 에러.",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+
+                    if (task.isSuccessful()) {
+                        AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
+                        Toast.makeText(Register.this, "회원 가입을 성공하셨습니다!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Register.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(Register.this, "등록 에러.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
             }
         });
     }
@@ -287,5 +329,25 @@ public class Register extends AppCompatActivity {
 
             }
         }
+    }
+
+    //데이터베이스에 데이터 넣기.
+    public boolean AddData(String email, String Name, String Year, String Month, String Day, Bitmap Img){
+        int first_idx = email.indexOf("@");
+        String first = email.substring(0,first_idx);
+        String tmp = email.substring(first_idx+1,email.length());
+        Log.d("string",first_idx+"  "+first+"   "+tmp);
+        int second_idx = tmp.indexOf(".");
+        String second = tmp.substring(0,second_idx);
+        String last = tmp.substring(second_idx+1,tmp.length());
+        Log.d("string",second_idx+"  "+second+"   "+last);
+
+        //Log.d("string2",second[0]+"  "+second[1]+"   ");
+        Profile profile = new Profile(Name, Year, Month, Day, Img);
+        Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
+        databaseReference.child("profile/"+second+"/"+last+"/"+first).push().setValue(profile);
+
+
+        return true;
     }
 }
