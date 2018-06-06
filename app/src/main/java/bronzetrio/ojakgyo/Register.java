@@ -1,5 +1,6 @@
 package bronzetrio.ojakgyo;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,8 +8,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +22,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,16 +35,43 @@ public class Register extends AppCompatActivity {
     private EditText password;
     private Button register;
     private FirebaseAuth mAuth;
+    private ArrayAdapter spinnerAdapter;
+    private ArrayList list1;
+    private ArrayList list2;
+    private ArrayList list3;
+    private Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
-
         id = (EditText)findViewById(R.id.id);
         password = (EditText)findViewById(R.id.password);
         register = (Button)findViewById(R.id.register);
+        spinner = (Spinner)findViewById(R.id.Birthday);
+
+        // 스피너에 들어갈 날짜 배열 초기화
+        list1 = Year_Add();
+        list2 = Month_ADD();
+        list3 = new ArrayList();
+        Day_Add(0,0,list3); //년, 월일 맞춰서 날짜 배열 리턴 다르게 해줄거임.
+
+        //스피너 어댑터 초기화.
+        spinnerAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list1);
+        spinner.setAdapter(spinnerAdapter);
+
+        //spiner event listener
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,6 +85,8 @@ public class Register extends AppCompatActivity {
         //Firebase instance
         mAuth = FirebaseAuth.getInstance();
     }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -131,5 +168,31 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
+    }
+    public ArrayList Year_Add(){
+        ArrayList a = new ArrayList();
+        for(int i=1980;i<2000;i++){
+            a.add(Integer.toString(i));
+        }
+        return a;
+    }
+    public ArrayList Month_ADD(){
+        ArrayList a = new ArrayList();
+        for(int i=1;i<13;i++){
+            a.add(Integer.toString(i));
+        }
+        return a;
+    }
+    public void Day_Add(int year,int month,ArrayList a) {
+        //한달에 28일 일때, 29, 30, 31일때 나눠서 보여준다.
+        //구현하기 귀찮아서 아직 안함.
+        int x=0;
+        if(true){
+            x=31;
+        }
+        for(int i=1;i<=x;i++){
+            a.add(Integer.toString(i));
+        }
+
     }
 }
