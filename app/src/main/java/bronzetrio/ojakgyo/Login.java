@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
 public class Login extends AppCompatActivity {
     private EditText Id_box;
     private EditText password;
-    private Button login_btn;
+    private TextView login_btn;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class Login extends AppCompatActivity {
 
         Id_box = (EditText)findViewById(R.id.Id);
         password = (EditText)findViewById(R.id.password);
-        login_btn = (Button)findViewById(R.id.login);
+        login_btn = (TextView)findViewById(R.id.login);
 
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
@@ -94,8 +95,8 @@ public class Login extends AppCompatActivity {
             return false;
         }
         if (!(m.find() && !email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))){
-            Toast.makeText(getApplicationContext(), "한글이 포함 되었습니다!", Toast.LENGTH_SHORT).show();
-            return false;
+//            Toast.makeText(getApplicationContext(), "한글이 포함 되었습니다!", Toast.LENGTH_SHORT).show();
+//            return false;
         }
 
         return true;

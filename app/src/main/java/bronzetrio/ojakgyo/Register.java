@@ -133,7 +133,7 @@ public class Register extends AppCompatActivity {
         }
         if (!(m.find() && !email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))){
             Toast.makeText(getApplicationContext(), "한글이 포함 되었습니다!", Toast.LENGTH_SHORT).show();
-            return false;
+//            return false;
         }
         if (password.length() < 6) {
             Toast.makeText(getApplicationContext(), "비밀번호는 최소 6자리 이상 입니다.", Toast.LENGTH_SHORT).show();
