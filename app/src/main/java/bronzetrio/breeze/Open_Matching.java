@@ -1,22 +1,28 @@
 package bronzetrio.breeze;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +36,15 @@ public class Open_Matching extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
+
+    ArrayList<String> names = new ArrayList<>();
+    ArrayList<String> majors = new ArrayList<>();
+    ArrayList<String> hobbys = new ArrayList<>();
+    ArrayList<String> birthdays = new ArrayList<>();
+    ArrayList<String> sexes = new ArrayList<>();
+    ArrayList<String> imges = new ArrayList<>();
+
+    int pop_idx=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,26 +57,9 @@ public class Open_Matching extends AppCompatActivity {
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference("profile");
         mAuth = FirebaseAuth.getInstance();
-        View.OnClickListener listener = new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                int i = v.getId();
-                if(i == R.id.reject){
-                    Log.d("tag", "profile");
-                    Map<String, Object> taskMap = new HashMap<String, Object>();
-                    taskMap.put("/token",1);
-                    databaseReference.updateChildren(taskMap);
-                    Map<String, Object> taskMap2 = new HashMap<String, Object>();
-                    taskMap2.put("/token",null);
-                    databaseReference.updateChildren(taskMap2);
-                }else if(i == R.id.accept){
 
-                }
-            }
-        };
 
         if(flag){
-            Log.d("tag", "profile");
             Map<String, Object> taskMap = new HashMap<String, Object>();
             taskMap.put("/token",1);
             databaseReference.updateChildren(taskMap);
@@ -80,26 +78,37 @@ public class Open_Matching extends AppCompatActivity {
                             for(DataSnapshot second : first.getChildren()){
                                 for(DataSnapshot third : second.getChildren()){
                                     for(DataSnapshot fourth : third.getChildren()) {
-                                        String name = (String) fourth.getKey();
-                                        Log.d("datachange", name);
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        int first_idx = user.getEmail().indexOf("@");
+
+                                        if(third.getKey().toString().equals(user.getEmail().substring(0,first_idx))){
+                                            continue;
+                                        }
+                                        Log.d("match : ",third.getKey().toString());
+                                        String name = (String) fourth.child("name").getValue();
+                                        String major = (String) fourth.child("major").getValue();
+                                        String hobby = (String) fourth.child("hobby").getValue();
+                                        String year = (String) fourth.child("year").getValue();
+                                        String month = (String) fourth.child("month").getValue();
+                                        String day = (String) fourth.child("day").getValue();
+                                        String sex = (String) fourth.child("sex").getValue();
+                                        String img = (String) fourth.child("img").getValue();
+
+                                        String birth = year+"-"+month+"-"+day;
+                                        names.add(name);
+                                        majors.add(major);
+                                        hobbys.add(hobby);
+                                        birthdays.add(birth);
+                                        sexes.add(sex);
+                                        imges.add(img);
                                     }
                                 }
                             }
                         }
-                        /*
-                        for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-
-                            Log.d("datachange", messageSnapshot.getKey());
-                            for (DataSnapshot messageSnapshot2: messageSnapshot.getChildren()) {
-                                Log.d("datachange_id", messageSnapshot2.getKey());
-
-                                String name = (String) messageSnapshot2.child("day").getValue();
-                                String message = (String) messageSnapshot2.child("month").getValue();
-                                Log.d("datachange_dayandmonth", name + " , "+message);
-                            }
-
-                        }//이중포문에 의한 전체 프로필 불러오기 databaseReference = FirebaseDatabase.getInstance().getReference("profile/"+second+"/"+last);
-                        */
+                        int random = (int)(Math.random()*(names.size()-1));
+                        Name.setText(names.get(random));
+                        profile_img.setImageBitmap(StringToBitMap(imges.get(random)));
+                        pop_idx=random;
                     }
 
                     @Override
@@ -107,10 +116,49 @@ public class Open_Matching extends AppCompatActivity {
 
                     }
                 });
+            }
+        };
+        View.OnClickListener listener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                int i = v.getId();
+                //재매칭 클릭.
+                if(i == R.id.reject) {
+                    Log.d("Size : ",Integer.toString(names.size()));
+                    if(names.size() == 1){
+                        Toast.makeText(getApplicationContext(),"매칭을 진행 할 수 없습니다.",Toast.LENGTH_SHORT).show();
 
+                    }else {
+                        names.remove(pop_idx);
+                        majors.remove(pop_idx);
+                        hobbys.remove(pop_idx);
+                        birthdays.remove(pop_idx);
+                        sexes.remove(pop_idx);
+                        imges.remove(pop_idx);
+
+                        int random = (int) (Math.random() * (names.size() - 1));
+                        //Log.d("Size : ",Integer.toString(random));
+                        Name.setText(names.get(random));
+                        profile_img.setImageBitmap(StringToBitMap(imges.get(random)));
+                    }
+                }
+                //승락 클릭.
+                else if(i == R.id.accept){
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    String email = user.getEmail();
+                    int first_idx = email.indexOf("@");
+                    String first = email.substring(0,first_idx);
+                    String tmp = email.substring(first_idx+1,email.length());
+                    Log.d("string",first_idx+"  "+first+"   "+tmp);
+                    int second_idx = tmp.indexOf(".");
+                    String second = tmp.substring(0,second_idx);
+                    String last = tmp.substring(second_idx+1,tmp.length());
+                }
 
             }
         };
+        reject.setOnClickListener(listener);
+        accept.setOnClickListener(listener);
     }
 
 
@@ -124,6 +172,17 @@ public class Open_Matching extends AppCompatActivity {
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
         }
     }
 }
