@@ -101,21 +101,10 @@ public class ProfileFragment extends Fragment {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = mAuth.getCurrentUser();
                 //메일 나누기.
-                if(user == null){
-                    Id.setText("You must login first!");
-                    return;
-                }
-                String email = mAuth.getCurrentUser().getEmail();
-                int first_idx = email.indexOf("@");
-                final String first = email.substring(0,first_idx);
-                String tmp = email.substring(first_idx+1,email.length());
+                String uid = mAuth.getCurrentUser().getUid();
 
-                int second_idx = tmp.indexOf(".");
-                final String second = tmp.substring(0,second_idx);
-                final String last = tmp.substring(second_idx+1,tmp.length());
-
-                databaseReference = FirebaseDatabase.getInstance().getReference("profile/"+second+"/"+last+"/"+first);
-                Log.d("tag", "profile/"+second+"/"+last);
+                databaseReference = FirebaseDatabase.getInstance().getReference("profile/"+uid);
+                //Log.d("tag", "profile/"+second+"/"+last);
                 Map<String, Object> taskMap = new HashMap<String, Object>();
                 taskMap.put("/token",1);
                 databaseReference.updateChildren(taskMap);
@@ -133,6 +122,7 @@ public class ProfileFragment extends Fragment {
                         String a="",b="",c="",d="",e="",f="",g="";
 
                         for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            Log.d("Profile:",dataSnapshot1.getKey());
                             a = (String) dataSnapshot1.child("day").getValue();
                             b = (String) dataSnapshot1.child("month").getValue();
                             c = (String) dataSnapshot1.child("year").getValue();
@@ -170,6 +160,10 @@ public class ProfileFragment extends Fragment {
                     // User is signed out
                     Id.setText("없음");
                     Log.d("tag", "onAuthStateChanged:signed_out");
+                  if(user == null){
+                    Id.setText("You must login first!");
+                    return;
+                  }
                 }
             }
         };
