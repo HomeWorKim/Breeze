@@ -100,6 +100,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = mAuth.getCurrentUser();
+                if(user == null){
+                    Id.setText("You must login first!");
+                    return;
+                }
                 //메일 나누기.
                 String uid = mAuth.getCurrentUser().getUid();
 
