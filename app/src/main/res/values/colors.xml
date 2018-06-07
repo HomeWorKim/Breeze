@@ -10,7 +10,7 @@
     <color name="accent_material_light">#FF4081</color>
     <color name="text_color_primary">#212121</color>
     <color name="text_color_secondary">#757575</color>
-
+    <color name="logo_color">#9B51E0</color>
     <color name="back">#f2f6f9</color>
     <color name="background_material_light">#fafafb</color>
 </resources>
