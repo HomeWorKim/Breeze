@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ public class Chat_Room extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(bronzetrio.breeze.R.layout.activity_chat__room);
+        setContentView(R.layout.activity_chat__room);
 
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -40,12 +41,12 @@ public class Chat_Room extends AppCompatActivity {
 
         //이 어댑터는 Firebase의 database를 지속적으로 감시하며 메시지가 추가 됐을 때, 혹은
         //액티비티가 처음 로딩 됐을 때, 메시지들을 레이아웃에 추가.
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Msg, ViewHolder>(Msg.class, bronzetrio.breeze.R.layout.msg_item, ViewHolder.class, databaseReference.child("sample")) {
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<Msg, ViewHolder>(Msg.class, R.layout.msg_item, ViewHolder.class, databaseReference.child("sample")) {
             @Override
             protected void populateViewHolder(ViewHolder viewHolder, Msg chatData, int position) {
                 viewHolder.userTv.setText(chatData.getUser());
                 viewHolder.msgTv.setText(chatData.getMSg());
-
+                Log.d("message",databaseReference.child("sample").getKey());
                 //메시지를 레이아웃에 추가하는 동작들을 여기에 코드로 작성하면 된다고 함.
             }
         };
