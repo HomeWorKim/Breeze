@@ -53,7 +53,18 @@
             android:layout_height="wrap_content"
             android:text="Hobby"
             android:textSize="20dp"/>
-
+        <Button
+            android:id="@+id/btn_photochange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="change photo"
+            android:layout_gravity="center"/>
+        <ImageView
+            android:id="@+id/testPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_person"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
 
