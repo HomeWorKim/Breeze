@@ -1,31 +1,67 @@
 package bronzetrio.breeze.fragments;
 
+
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
+import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
+import com.google.firebase.ml.vision.face.FirebaseVisionFace;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import bronzetrio.breeze.Profile;
 import bronzetrio.breeze.R;
+import bronzetrio.breeze.config.common;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +76,14 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "ProfileFragment";
+    private static final int PICTURE_REQUEST_CODE = 100;
+    public static final int RESULT_OK           = -1;
+
+    private ArrayList<String> refer_vector,refer_vector2;
+    private ArrayList<Double> test_vector;
+    private ArrayList<ArrayList<Double>> refer_vector_feature,refer_vector_feature2;
+    FirebaseVisionImage image;
 
     private TextView Id;
     private TextView Name;
@@ -54,13 +98,16 @@ public class ProfileFragment extends Fragment {
     private FirebaseUser user;
     private DatabaseReference databaseReference;
     private DataSnapshot snapshot;
-
+    ImageView testPicture;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private Bitmap bmp;
     private OnFragmentInteractionListener mListener;
 
+    private Button photochange_btn;
+    private FirebaseVisionFaceDetectorOptions options;
+    String a="",b="",c="",d="",e="",f="",g="";
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -88,13 +135,24 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         //database 객체 가져오기.
-
-
+        test_vector = new ArrayList<>();
+        refer_vector = new ArrayList<>();
+        refer_vector2 = new ArrayList<>();
+        refer_vector_feature = new ArrayList<>();
+        refer_vector_feature2 = new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        options =
+                new FirebaseVisionFaceDetectorOptions.Builder()
+                        .setModeType(FirebaseVisionFaceDetectorOptions.FAST_MODE)
+                        .setLandmarkType(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+                        .setClassificationType(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                        .setMinFaceSize(0.15f)
+                        .setTrackingEnabled(true)
+                        .build();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -106,6 +164,56 @@ public class ProfileFragment extends Fragment {
                 }
                 //메일 나누기.
                 String uid = mAuth.getCurrentUser().getUid();
+                databaseReference = FirebaseDatabase.getInstance().getReference("feature");
+                Map<String, Object> taskMap3 = new HashMap<String, Object>();
+                taskMap3.put("/token",1);
+                databaseReference.updateChildren(taskMap3);
+                Map<String, Object> taskMap4 = new HashMap<String, Object>();
+                taskMap4.put("/token",null);
+                databaseReference.updateChildren(taskMap4);
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        refer_vector = new ArrayList<>();
+                        refer_vector2 = new ArrayList<>();
+                        refer_vector_feature = new ArrayList<>();
+                        refer_vector_feature2 = new ArrayList<>();
+                        for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            //Log.d("Profile:",dataSnapshot1.getKey());
+                            if(dataSnapshot1.child("gender").getValue().toString().equals("1")){
+                                refer_vector.add(dataSnapshot1.getKey().toString());
+
+                                for(DataSnapshot dataSnapshot2:dataSnapshot1.getChildren()){
+                                    if(dataSnapshot2.getValue().toString().equals("1")||dataSnapshot2.getValue().toString().equals("2")){
+
+                                    }else{
+                                        GenericTypeIndicator<ArrayList<Double>> t = new GenericTypeIndicator<ArrayList<Double>>() {};
+                                        refer_vector_feature.add(new ArrayList<Double>(dataSnapshot2.getValue(t)));
+                                    }
+                                }
+                            }else{
+                                refer_vector2.add(dataSnapshot1.getKey().toString());
+                                for(DataSnapshot dataSnapshot2:dataSnapshot1.getChildren()){
+                                    if(dataSnapshot2.getValue().toString().equals("1")||dataSnapshot2.getValue().toString().equals("2")){
+
+                                    }else{
+                                        GenericTypeIndicator<ArrayList<Double>> t = new GenericTypeIndicator<ArrayList<Double>>() {};
+                                        refer_vector_feature2.add(new ArrayList<Double>(dataSnapshot2.getValue(t)));
+                                    }
+                                }
+                            }
+                        }
+                        Log.d("Profile:","test_vector_size is : "+refer_vector_feature.size());
+                        Log.d("Profile:","test_vector2_size is : "+refer_vector_feature2.size());
+                        //Log.d("Profile:","test_vector_size is : "+refer_vector_feature.get(2).size());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("data_error", "loadPost:onCancelled", databaseError.toException());
+
+                    }
+                });
 
                 databaseReference = FirebaseDatabase.getInstance().getReference("profile/"+uid);
                 //Log.d("tag", "profile/"+second+"/"+last);
@@ -118,12 +226,6 @@ public class ProfileFragment extends Fragment {
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Profile tmp = dataSnapshot.getValue(Profile.class);
-                        //Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                        //String a = (String) map.get("day");
-                        //String b = (String) map.get("month");
-                        //textView.append(b + " -- " + a + "\n");
-                        String a="",b="",c="",d="",e="",f="",g="";
 
                         for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             Log.d("Profile:",dataSnapshot1.getKey());
@@ -184,11 +286,15 @@ public class ProfileFragment extends Fragment {
             return null;
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        photochange_btn = (Button)view.findViewById(R.id.btn_photochange);
+
+        testPicture = (ImageView)view.findViewById(R.id.testPicture);
         Id = (TextView)view.findViewById(R.id.Id);
         Name = (TextView)view.findViewById(R.id.name);
         Birthday = (TextView)view.findViewById(R.id.Birthday);
@@ -196,6 +302,17 @@ public class ProfileFragment extends Fragment {
         Sex = (TextView)view.findViewById(R.id.sex);
         Major = (TextView)view.findViewById(R.id.major);
         Hobby = (TextView)view.findViewById(R.id.hobby);
+
+        photochange_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,false);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"),PICTURE_REQUEST_CODE);
+            }
+        });
+
         return view;
     }
 
@@ -250,4 +367,270 @@ public class ProfileFragment extends Fragment {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == PICTURE_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                //기존 이미지 지우기.
+                profile_img.setImageResource(0);
+                Uri uri = data.getData();
+                ClipData clipData = data.getClipData();
+
+                //구글 드라이브같은데서 가져오는 걸로 예상됨.
+                if(clipData != null){
+                    try{
+                        bmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                    }catch(FileNotFoundException e){
+                        e.printStackTrace();
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
+
+                    //profile_img.setImageBitmap(bmp);
+                }
+                //사진 폴더에서 선택할때.
+                else if(uri != null){
+                    try{
+                        bmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                    }catch(FileNotFoundException e){
+                        e.printStackTrace();
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
+
+                    
+                    profile_img.setImageBitmap(bmp);
+                }
+            }
+            //사진 선택 안했을때?
+            else{
+                Toast.makeText(getContext(),"사진선택실패",Toast.LENGTH_SHORT).show();
+            }
+            Log.d(TAG,"hellp1");
+            if(bmp.getHeight()<bmp.getWidth()){
+                Log.d(TAG,"hellp2");
+                bmp = imgRotate(bmp);
+
+            }
+            image = FirebaseVisionImage.fromBitmap(bmp);
+            final FirebaseVisionFaceDetector detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+
+        final Task<List<FirebaseVisionFace>> result =
+                detector.detectInImage(image)
+                        .addOnSuccessListener(
+                                new OnSuccessListener<List<FirebaseVisionFace>>() {
+                                    @Override
+                                    public void onSuccess(List<FirebaseVisionFace> faces) {
+                                        Log.d(TAG,"success_detect");
+
+                                        Log.d(TAG,"number : "+faces.size());
+                                        testPicture.setImageBitmap(bmp);
+
+
+                                        if(faces.size()==1){
+                                            for (FirebaseVisionFace face : faces) {
+
+                                                Rect bounds = face.getBoundingBox();
+                                                float rotY = face.getHeadEulerAngleY();  // Head is rotated to the right rotY degrees
+                                                float rotZ = face.getHeadEulerAngleZ();  // Head is tilted sideways rotZ degrees
+
+                                                // If landmark detection was enabled (mouth, ears, eyes, cheeks, and
+                                                // nose available):
+                                                //Log.e(TAG,"hello "+face.getLandmark(FirebaseVisionFaceLandmark.NOSE_BASE));
+                                                test_vector = common.getFeature(face);
+
+
+                                                FirebaseVisionFaceLandmark leftEar = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_EAR);
+                                                if (leftEar != null) {
+
+                                                    FirebaseVisionPoint leftEarPos = leftEar.getPosition();
+                                                }
+
+                                                // If classification was enabled:
+                                                if (face.getSmilingProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
+                                                    float smileProb = face.getSmilingProbability();
+                                                }
+                                                if (face.getRightEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
+                                                    float rightEyeOpenProb = face.getRightEyeOpenProbability();
+                                                }
+
+                                                // If face tracking was enabled:
+                                                if (face.getTrackingId() != FirebaseVisionFace.INVALID_ID) {
+                                                    int id = face.getTrackingId();
+                                                }
+                                                Log.d(TAG,"detected box"+rotY+","+rotZ);
+                                                ArrayList<Double> similarity_arrayList = new ArrayList<>();
+                                                double max = 0.0;
+                                                String name ="";
+                                                Log.d(TAG,"Gender is "+e);
+                                                if(e.equals("남성")){
+
+                                                    for(ArrayList<Double> arrayList:refer_vector_feature){
+
+                                                        similarity_arrayList.add(common.cosinesimilarity(arrayList,test_vector));
+                                                        Log.d(TAG,"similarity score is "+common.cosinesimilarity(arrayList,test_vector));
+                                                    }
+
+                                                    for(int i=0;i<similarity_arrayList.size();i++){
+                                                        if(max<similarity_arrayList.get(i)) {
+                                                            max = similarity_arrayList.get(i);
+                                                            name = refer_vector.get(i);
+                                                        }
+                                                    }
+
+                                                }else{
+                                                    for(ArrayList<Double> arrayList:refer_vector_feature2){
+                                                        similarity_arrayList.add(common.cosinesimilarity(arrayList,test_vector));
+                                                    }
+
+                                                    for(int i=0;i<similarity_arrayList.size();i++){
+                                                        if(max>similarity_arrayList.get(i)) {
+                                                            max = similarity_arrayList.get(i);
+                                                            name = refer_vector2.get(i);
+                                                        }
+                                                    }
+                                                }
+
+                                                profile_img.setImageBitmap(bmp);
+                                                Map<String, Object> taskMap = new HashMap<>();
+
+                                                taskMap.put("day",a);
+                                                taskMap.put("hobby",b);
+                                                taskMap.put("img",BitMapToString(bmp));
+                                                taskMap.put("major",f);
+                                                taskMap.put("month",b);
+                                                taskMap.put("name",d);
+                                                taskMap.put("sex",e);
+                                                taskMap.put("year",c);
+                                                taskMap.put("talent",name);
+                                                taskMap.put("similarity",Double.toString(max));
+                                                databaseReference.getRef().removeValue();
+                                                databaseReference.push().updateChildren(taskMap);
+                                            }
+                                        }else{
+                                            Log.e(TAG,"detect number over : "+faces.size());
+                                            Toast.makeText(getContext(),"사진에 자기 자신만 나와야합니다.",Toast.LENGTH_LONG).show();
+                                        }
+
+                                    }
+                                })
+                        .addOnFailureListener(
+                                new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG,"failure_detect");
+                                        // Task failed with an exception
+                                        // ...
+                                        Toast.makeText(getContext(),"사진에 얼굴 검출이 실패하였습니다..",Toast.LENGTH_LONG).show();
+                                    }
+                                });
+
+        }
+    }
+
+    private Bitmap imgRotate(Bitmap bmp) {
+        int width = bmp.getWidth();
+        int height = bmp.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(270);
+
+        Bitmap resizedBitmap = Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
+        bmp.recycle();
+
+        return resizedBitmap;
+    }
+
+    //데이터베이스에 데이터 넣기.
+    public boolean UpdateData(String email, String Name, String Year, String Month, String Day, String sex,Bitmap Img){
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String major = Major.getText().toString();
+        String hobby = Hobby.getText().toString();
+        //Log.d("string2",second[0]+"  "+second[1]+"   ");
+        String str_Img = BitMapToString(Img);
+        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,major,hobby);
+        Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
+        databaseReference.child("profile/"+currentUser.getUid()).push().setValue(profile);
+
+        return true;
+    }
+
+    //Bitmap 을 String 형태로 변환.
+    public String BitMapToString(Bitmap bitmap){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        int dstWidth = bitmap.getWidth()/4;
+        int dstHeight = bitmap.getHeight()/4;
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, dstWidth, dstHeight, true);
+
+        ByteArrayOutputStream ByteStream=new  ByteArrayOutputStream();
+        resized.compress(Bitmap.CompressFormat.PNG,20, ByteStream);
+        byte [] b=ByteStream.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+    }
+
+    /**
+     * Get the angle by which an image must be rotated given the device's current
+     * orientation.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private int getRotationCompensation(String cameraId, Activity activity, Context context)
+            throws CameraAccessException {
+        // Get the device's current rotation relative to its "native" orientation.
+        // Then, from the ORIENTATIONS table, look up the angle the image must be
+        // rotated to compensate for the device's rotation.
+        int deviceRotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int rotationCompensation = ORIENTATIONS.get(deviceRotation);
+
+        // On most devices, the sensor orientation is 90 degrees, but for some
+        // devices it is 270 degrees. For devices with a sensor orientation of
+        // 270, rotate the image an additional 180 ((270 + 270) % 360) degrees.
+        CameraManager cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+        int sensorOrientation = cameraManager
+                .getCameraCharacteristics(cameraId)
+                .get(CameraCharacteristics.SENSOR_ORIENTATION);
+        rotationCompensation = (rotationCompensation + sensorOrientation + 270) % 360;
+
+        // Return the corresponding FirebaseVisionImageMetadata rotation value.
+        int result;
+        switch (rotationCompensation) {
+            case 0:
+                result = FirebaseVisionImageMetadata.ROTATION_0;
+                break;
+            case 90:
+                result = FirebaseVisionImageMetadata.ROTATION_90;
+                break;
+            case 180:
+                result = FirebaseVisionImageMetadata.ROTATION_180;
+                break;
+            case 270:
+                result = FirebaseVisionImageMetadata.ROTATION_270;
+                break;
+            default:
+                result = FirebaseVisionImageMetadata.ROTATION_0;
+                Log.e(TAG, "Bad rotation value: " + rotationCompensation);
+        }
+        return result;
+    }
+
+    // 이미지 회전 함수
+    public Bitmap rotateImage(Bitmap src, float degree) {
+
+        // Matrix 객체 생성
+        Matrix matrix = new Matrix();
+        // 회전 각도 셋팅
+        matrix.postRotate(degree);
+        // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(),src.getHeight(), matrix, true);
+    }
+
 }
