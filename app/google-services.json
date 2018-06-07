@@ -40,54 +40,6 @@
           "status": 2
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:392272175453:android:929a5bd9270c30c3",
-        "android_client_info": {
-          "package_name": "bronzetrio.ojakgyo"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "392272175453-tb63jajijmg13o6h332u40sju8358rph.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "bronzetrio.ojakgyo",
-            "certificate_hash": "9dc313de97848aea2f485ba1bd14a9d5a4a5e171"
-          }
-        },
-        {
-          "client_id": "392272175453-j8rb6ra5dsogf0d9cnsdbgp5ec0u673d.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "392272175453-j8rb6ra5dsogf0d9cnsdbgp5ec0u673d.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBBp7_88utxChfBfxPWRn85gak0zNUlVm8"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "392272175453-j8rb6ra5dsogf0d9cnsdbgp5ec0u673d.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
     }
   ],
   "configuration_version": "1"

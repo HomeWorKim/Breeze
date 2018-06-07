@@ -125,7 +125,6 @@ public class Register extends AppCompatActivity {
         major.setAdapter(spinnerAdapter5);
         hobby.setAdapter(spinnerAdapter6);
 
-        spinner.setSelection(14);
         //생일 중 년도 데이터 선택.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -228,11 +227,11 @@ public class Register extends AppCompatActivity {
                 String pwd = password.getText().toString().trim();
                 Name = name.getText().toString().trim();
                 if(Data_Empty() == 0){  //이름이 비어 있다면.
-                    Toast.makeText(Register.this, "이름을 적어주세요!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "이름을 적어주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if(Data_Empty() == 1){
-                    Toast.makeText(Register.this, "사진을 넣어주세요!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "사진을 넣어주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 createID(email,pwd);
@@ -326,11 +325,11 @@ public class Register extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
                     Toast.makeText(Register.this, "회원 가입을 성공하셨습니다!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(Register.this, "등록 에러.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "등록 에러.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -405,13 +404,13 @@ public class Register extends AppCompatActivity {
 
     //데이터베이스에 데이터 넣기.
     public boolean AddData(String email, String Name, String Year, String Month, String Day, Bitmap Img){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         String str_Img = BitMapToString(Img);
         Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,Major,Hobby);
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
         databaseReference.child("profile/"+currentUser.getUid()).push().setValue(profile);
+
 
         return true;
     }

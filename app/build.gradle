@@ -24,7 +24,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     //Firebase Connect
-    // implementation 'com.google.firebase:firebase-auth:11.0.4'
+
     implementation 'com.google.firebase:firebase-auth:15.0.0'
     implementation "com.google.android.gms:play-services-base:15.0.1"
 
