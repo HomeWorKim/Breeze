@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.MatchFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/mat"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Match_fragment" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Match_fragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/register"
@@ -42,4 +46,13 @@
         android:text="chatroom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
+
+    <Button
+        android:id="@+id/open_matching"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="open_matching"
+        app:layout_constraintStart_toStartOf="@+id/chatroom"
+        app:layout_constraintTop_toBottomOf="@+id/chatroom" />
 </android.support.constraint.ConstraintLayout>

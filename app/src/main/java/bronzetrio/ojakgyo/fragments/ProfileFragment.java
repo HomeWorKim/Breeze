@@ -162,9 +162,7 @@ public class ProfileFragment extends Fragment {
 
                     }
                 });
-
-                //Log.d("data",databaseReference.child("profile/"+second+"/"+last+"/"+first).getKey());
-                //snapshot = databaseReference.child("profile/"+second+"/"+last+"/"+first);
+                /*
                 if (user != null) {
                     // User is signed in
                     Id.setText("123");
@@ -174,6 +172,7 @@ public class ProfileFragment extends Fragment {
                     Id.setText("없음");
                     Log.d("tag", "onAuthStateChanged:signed_out");
                 }
+                */
             }
         };
 
