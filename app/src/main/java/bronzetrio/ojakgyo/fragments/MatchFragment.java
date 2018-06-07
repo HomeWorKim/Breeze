@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 import bronzetrio.ojakgyo.Chat_Room;
 import bronzetrio.ojakgyo.Login;
 import bronzetrio.ojakgyo.MainActivity;
-import bronzetrio.ojakgyo.Open_Matching;
 import bronzetrio.ojakgyo.R;
 import bronzetrio.ojakgyo.Register;
 
@@ -46,7 +45,6 @@ public class MatchFragment extends Fragment {
     private Button register_btn;
     private Button login_btn;
     private Button chat_btn;
-    private Button open_matching_btn;
     private TextView txt;
 
     private OnFragmentInteractionListener mListener;
@@ -109,9 +107,7 @@ public class MatchFragment extends Fragment {
         register_btn = (Button)view.findViewById(R.id.register);
         login_btn = (Button)view.findViewById(R.id.login);
         chat_btn = (Button)view.findViewById(R.id.chatroom);
-        open_matching_btn = (Button)view.findViewById(R.id.open_matching);
         txt = (TextView)view.findViewById(R.id.mat);
-
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -128,16 +124,11 @@ public class MatchFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), Chat_Room.class);
                     startActivity(intent);
                 }
-                else if(i == R.id.open_matching){
-                    Intent intent = new Intent(getActivity(), Open_Matching.class);
-                    startActivity(intent);
-                }
             }
         };
         register_btn.setOnClickListener(listener);
         login_btn.setOnClickListener(listener);
         chat_btn.setOnClickListener(listener);
-        open_matching_btn.setOnClickListener(listener);
 
         return view;
     }
