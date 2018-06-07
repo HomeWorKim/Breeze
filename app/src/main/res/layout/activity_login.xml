@@ -110,17 +110,17 @@
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
         android:layout_marginTop="50dp"
-        android:textAlignment="center"
-        android:background="@drawable/rectangle2"
+        android:background="@drawable/purple_grad_rectangle"
         android:padding="14dp"
         android:text="로그인"
-        android:textSize="18dp"
-        android:textColor="#fff"/>
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="18dp" />
 
     <View
         android:layout_width="match_parent"
@@ -134,11 +134,11 @@
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
-        android:background="@drawable/rectangle"
+        android:background="@drawable/empty_purple_rectangle"
         android:padding="14dp"
         android:text="가입"
         android:textAlignment="center"
