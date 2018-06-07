@@ -3,7 +3,7 @@
     package="bronzetrio.breeze">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +24,8 @@
         <activity android:name=".Register" />
         <activity android:name=".Login" />
         <activity android:name=".Chat_Room" />
-        <activity android:name=".Open_Matching"></activity>
+        <activity android:name=".Open_Matching" />
+        <activity android:name=".Chat_Room_v2"></activity>
     </application>
 
 </manifest>
