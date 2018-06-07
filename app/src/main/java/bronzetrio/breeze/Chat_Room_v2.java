@@ -32,6 +32,7 @@ public class Chat_Room_v2 extends AppCompatActivity {
     private FirebaseRecyclerAdapter<Msg, ViewHolder> mFirebaseAdapter;
     private DatabaseReference databaseReference;
 
+    private boolean flag=false;
     private String room_name="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,64 +55,69 @@ public class Chat_Room_v2 extends AppCompatActivity {
         SendBtn = (Button)findViewById(R.id.sendBtn);
         SendTxt = (EditText)findViewById(R.id.send_txt);
 
-        databaseReference
-                .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(room_type_1)) {
-                    Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_1 + " exists");
-                    //databaseReference
-                    //        .child(room_type_1)
-                    //        .setValue("true");
-                    room_name = room_type_1;
-                } else if (dataSnapshot.hasChild(room_type_2)) {
-                    Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_2 + " exists");
-                    //databaseReference
-                    //        .child(room_type_2)
-                    //        .setValue("true");
-                    room_name = room_type_2;
-                } else {
-                    Log.e("Chat", "sendMessageToFirebaseUser: success");
-                    //databaseReference
-                    //        .child(room_type_1)
-                    //        .setValue("true");
-                    room_name = room_type_1;
+            databaseReference
+                    .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild(room_type_1)) {
+                        Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_1 + " exists");
+                        //databaseReference
+                        //        .child(room_type_1)
+                        //        .setValue("true");
+                        room_name = room_type_1;
+                    } else if (dataSnapshot.hasChild(room_type_2)) {
+                        Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_2 + " exists");
+                        //databaseReference
+                        //        .child(room_type_2)
+                        //        .setValue("true");
+                        room_name = room_type_2;
+                    } else {
+                        Log.e("Chat", "sendMessageToFirebaseUser: success");
+                        //databaseReference
+                        //        .child(room_type_1)
+                        //        .setValue("true");
+                        room_name = room_type_1;
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+            flag = true;
 
+        Log.d("Hu",room_name+"1234 "+databaseReference.child(room_name).getKey());
         //이 어댑터는 Firebase의 database를 지속적으로 감시하며 메시지가 추가 됐을 때, 혹은
         //액티비티가 처음 로딩 됐을 때, 메시지들을 레이아웃에 추가.
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Msg, ViewHolder>(Msg.class, R.layout.msg_item, ViewHolder.class,
-                databaseReference.child(room_name)) {
-            @Override
-            protected void populateViewHolder(ViewHolder viewHolder, Msg chatData, int position) {
-                viewHolder.userTv.setText(chatData.getUser());
-                viewHolder.msgTv.setText(chatData.getMSg());
-                Log.d("message",databaseReference.child(room_name).getKey());
-                //메시지를 레이아웃에 추가하는 동작들을 여기에 코드로 작성하면 된다고 함.
-            }
-        };
 
-        //onItemRangeInserted()안의 코드는 메시지가 많이 와서 화면에 표시할 수 있는 양보다
-        //더 많은 양의 아이템들이 추가 됐을 때, 스크롤을 가장 아래로 내려주는 코드
-        mFirebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                int friendlyMessageCount = mFirebaseAdapter.getItemCount();
-                int lasVisiblePosition =
-                        mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-                if((lasVisiblePosition == -1) || (positionStart >= (friendlyMessageCount - 1)) && (lasVisiblePosition == (positionStart - 1))){
-                    recyclerView.scrollToPosition(positionStart);
+            mFirebaseAdapter = new FirebaseRecyclerAdapter<Msg, ViewHolder>(Msg.class, R.layout.msg_item, ViewHolder.class,
+                    databaseReference.child(room_name)) {
+                @Override
+                protected void populateViewHolder(ViewHolder viewHolder, Msg chatData, int position) {
+                    viewHolder.userTv.setText(chatData.getUser());
+                    viewHolder.msgTv.setText(chatData.getMSg());
+                    Log.d("message", databaseReference.child(room_name).getKey());
+                    //메시지를 레이아웃에 추가하는 동작들을 여기에 코드로 작성하면 된다고 함.
                 }
-            }
-        });
+            };
+            //Log.d("message", mFirebaseAdapter.getItem(0).getMSg());
+            //onItemRangeInserted()안의 코드는 메시지가 많이 와서 화면에 표시할 수 있는 양보다
+            //더 많은 양의 아이템들이 추가 됐을 때, 스크롤을 가장 아래로 내려주는 코드
+            mFirebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onItemRangeInserted(int positionStart, int itemCount) {
+                    super.onItemRangeInserted(positionStart, itemCount);
+                    int friendlyMessageCount = mFirebaseAdapter.getItemCount();
+                    int lasVisiblePosition =
+                            mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+                    if ((lasVisiblePosition == -1) || (positionStart >= (friendlyMessageCount - 1)) && (lasVisiblePosition == (positionStart - 1))) {
+                        recyclerView.scrollToPosition(positionStart);
+                    }
+                }
+            });
+            recyclerView.setLayoutManager(mLinearLayoutManager);
+            recyclerView.setAdapter(mFirebaseAdapter);
 
         SendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,9 +133,6 @@ public class Chat_Room_v2 extends AppCompatActivity {
 
             }
         });
-
-        recyclerView.setLayoutManager(mLinearLayoutManager);
-        recyclerView.setAdapter(mFirebaseAdapter);
 
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
