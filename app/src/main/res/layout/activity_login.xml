@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="bronzetrio.ojakgyo.Login">
+    tools:context="bronzetrio.breeze.Login">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -16,10 +16,10 @@
         android:layout_height="220dp">
 
         <ImageView
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@drawable/ojakgyologo"/>
+            android:src="@drawable/breeze_logo_typo"/>
 
     </FrameLayout>
 
@@ -115,22 +115,29 @@
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/purple_grad_rectangle"
+        android:background="@drawable/grad_rectangle2"
         android:padding="14dp"
         android:text="로그인"
         android:textAlignment="center"
         android:textColor="#fff"
-        android:textSize="18dp" />
+        android:textSize="18dp"
+        android:textStyle="bold"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@android:color/darker_gray"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="아이디가 없어요!"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
@@ -138,11 +145,14 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
-        android:background="@drawable/empty_purple_rectangle"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/white_rectangle"
         android:padding="14dp"
         android:text="가입"
         android:textAlignment="center"
-        android:textSize="16dp" />
+        android:textSize="18dp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"/>
 
     <!--<Button-->
         <!--android:id="@+id/login"-->

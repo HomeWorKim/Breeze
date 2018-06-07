@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="bronzetrio.ojakgyo.Register">
+    tools:context="bronzetrio.breeze.Register">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -200,11 +200,13 @@
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/empty_purple_rectangle"
+        android:background="@drawable/white_rectangle"
         android:padding="14dp"
         android:text="가입"
         android:textAlignment="center"
-        android:textSize="16dp" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>
