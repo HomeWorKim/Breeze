@@ -240,7 +240,7 @@ public class Register extends AppCompatActivity {
         Log.d("tag","pwd : "+ password);
         AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
 
-        if(true)return;
+
 
         if(!validateForm(email,pwd)){
             return;

@@ -4,11 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import bronzetrio.ojakgyo.Chat_Room;
 import bronzetrio.ojakgyo.Login;
@@ -29,7 +35,9 @@ public class MatchFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser user;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -37,6 +45,7 @@ public class MatchFragment extends Fragment {
     private Button register_btn;
     private Button login_btn;
     private Button chat_btn;
+    private TextView txt;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,13 +74,30 @@ public class MatchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // ...
+        // [START auth_state_listener]
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = mAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    txt.setText(mAuth.getCurrentUser().getEmail());
+                    Log.d("tag", "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    txt.setText("없음");
+                    Log.d("tag", "onAuthStateChanged:signed_out");
+                }
+            }
+        };
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,6 +107,7 @@ public class MatchFragment extends Fragment {
         register_btn = (Button)view.findViewById(R.id.register);
         login_btn = (Button)view.findViewById(R.id.login);
         chat_btn = (Button)view.findViewById(R.id.chatroom);
+        txt = (TextView)view.findViewById(R.id.mat);
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -123,7 +150,18 @@ public class MatchFragment extends Fragment {
 //                    + " must implement OnFragmentInteractionListener");
 //        }
 //    }
-
+@Override
+public void onStart() {
+    super.onStart();
+    mAuth.addAuthStateListener(mAuthListener);
+}
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
     @Override
     public void onDetach() {
         super.onDetach();

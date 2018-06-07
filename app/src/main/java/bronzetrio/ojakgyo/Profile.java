@@ -39,4 +39,25 @@ public class Profile {
         return img;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public void setImg(Bitmap img) {
+
+        this.img = img;
+    }
+
+    public void setDay(String day) {
+
+        this.day = day;
+    }
 }
