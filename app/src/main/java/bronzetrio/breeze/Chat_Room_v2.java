@@ -54,39 +54,39 @@ public class Chat_Room_v2 extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.chat_view);
         SendBtn = (Button)findViewById(R.id.sendBtn);
         SendTxt = (EditText)findViewById(R.id.send_txt);
-
-            databaseReference
-                    .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.hasChild(room_type_1)) {
-                        Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_1 + " exists");
-                        //databaseReference
-                        //        .child(room_type_1)
-                        //        .setValue("true");
-                        room_name = room_type_1;
-                    } else if (dataSnapshot.hasChild(room_type_2)) {
-                        Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_2 + " exists");
-                        //databaseReference
-                        //        .child(room_type_2)
-                        //        .setValue("true");
-                        room_name = room_type_2;
-                    } else {
-                        Log.e("Chat", "sendMessageToFirebaseUser: success");
-                        //databaseReference
-                        //        .child(room_type_1)
-                        //        .setValue("true");
-                        room_name = room_type_1;
+            if(!flag) {
+                databaseReference
+                        .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(room_type_1)) {
+                            Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_1 + " exists");
+                            //databaseReference
+                            //        .child(room_type_1)
+                            //        .setValue("true");
+                            room_name = room_type_1;
+                        } else if (dataSnapshot.hasChild(room_type_2)) {
+                            Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_2 + " exists");
+                            //databaseReference
+                            //        .child(room_type_2)
+                            //        .setValue("true");
+                            room_name = room_type_2;
+                        } else {
+                            Log.e("Chat", "sendMessageToFirebaseUser: success");
+                            //databaseReference
+                            //        .child(room_type_1)
+                            //        .setValue("true");
+                            room_name = room_type_1;
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
-            flag = true;
-
+                    }
+                });
+                flag = true;
+            }
         Log.d("Hu",room_name+"1234 "+databaseReference.child(room_name).getKey());
         //이 어댑터는 Firebase의 database를 지속적으로 감시하며 메시지가 추가 됐을 때, 혹은
         //액티비티가 처음 로딩 됐을 때, 메시지들을 레이아웃에 추가.

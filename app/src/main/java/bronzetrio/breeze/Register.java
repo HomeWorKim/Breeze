@@ -125,7 +125,6 @@ public class Register extends AppCompatActivity {
         major.setAdapter(spinnerAdapter5);
         hobby.setAdapter(spinnerAdapter6);
 
-        spinner.setSelection(14);
         //생일 중 년도 데이터 선택.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -405,13 +404,13 @@ public class Register extends AppCompatActivity {
 
     //데이터베이스에 데이터 넣기.
     public boolean AddData(String email, String Name, String Year, String Month, String Day, Bitmap Img){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         String str_Img = BitMapToString(Img);
         Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,Major,Hobby);
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
         databaseReference.child("profile/"+currentUser.getUid()).push().setValue(profile);
+
 
         return true;
     }
