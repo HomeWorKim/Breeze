@@ -51,6 +51,9 @@ public class ProfileFragment extends Fragment {
     private TextView Id;
     private TextView Name;
     private TextView Birthday;
+    private TextView Sex;
+    private TextView Major;
+    private TextView Hobby;
     private ImageView profile_img;
 
     private FirebaseAuth mAuth;
@@ -130,7 +133,7 @@ public class ProfileFragment extends Fragment {
                         //String a = (String) map.get("day");
                         //String b = (String) map.get("month");
                         //textView.append(b + " -- " + a + "\n");
-                        String a="",b="",c="",d="",e="";
+                        String a="",b="",c="",d="",e="",f="",g="";
 
                         for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             a = (String) dataSnapshot1.child("day").getValue();
@@ -138,6 +141,8 @@ public class ProfileFragment extends Fragment {
                             c = (String) dataSnapshot1.child("year").getValue();
                             d = (String) dataSnapshot1.child("name").getValue();
                             e = (String) dataSnapshot1.child("sex").getValue();
+                            f = (String) dataSnapshot1.child("major").getValue();
+                            g = (String) dataSnapshot1.child("hobby").getValue();
                             String str_bmp = (String)dataSnapshot1.child("img").getValue();
                             bmp = StringToBitMap(str_bmp);
                         }
@@ -146,6 +151,9 @@ public class ProfileFragment extends Fragment {
                         Name.setText(d);
                         Birthday.setText(birth);
                         profile_img.setImageBitmap(bmp);
+                        Sex.setText(e);
+                        Major.setText(f);
+                        Hobby.setText(g);
                     }
 
                     @Override
@@ -190,6 +198,9 @@ public class ProfileFragment extends Fragment {
         Name = (TextView)view.findViewById(R.id.name);
         Birthday = (TextView)view.findViewById(R.id.Birthday);
         profile_img = (ImageView)view.findViewById(R.id.profile_img);
+        Sex = (TextView)view.findViewById(R.id.sex);
+        Major = (TextView)view.findViewById(R.id.major);
+        Hobby = (TextView)view.findViewById(R.id.hobby);
         return view;
     }
 

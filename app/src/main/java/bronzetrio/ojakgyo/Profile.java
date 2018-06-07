@@ -13,19 +13,39 @@ public class Profile {
     String day;
     String img;
     String sex;
+    String major;
+    String hobby;
     public Profile(){
 
     }
-    public Profile(String name, String year, String month, String day, String img,String sex){
+    public Profile(String name, String year, String month, String day, String img,String sex,String major, String hobby){
         this.name = name;
         this.year = year;
         this.month = month;
         this.day = day;
         this.img = img;
         this.sex = sex;
+        this.major = major;
+        this.hobby = hobby;
     }
     public String getName(){
         return name;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
+
+    public void setHobby(String hobby) {
+        this.hobby = hobby;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     public String getYear(){

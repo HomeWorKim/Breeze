@@ -35,6 +35,24 @@
             android:layout_height="wrap_content"
             android:text="Birthday"
             android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sex"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/major"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Major"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/hobby"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hobby"
+            android:textSize="20dp"/>
 
     </LinearLayout>
 

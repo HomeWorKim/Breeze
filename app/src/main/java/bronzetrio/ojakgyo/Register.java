@@ -48,14 +48,23 @@ public class Register extends AppCompatActivity {
     private ArrayAdapter spinnerAdapter2;
     private ArrayAdapter spinnerAdapter3;
     private ArrayAdapter spinnerAdapter4;
+    private ArrayAdapter spinnerAdapter5;
+    private ArrayAdapter spinnerAdapter6;
+
     private ArrayList list1;
     private ArrayList list2;
     private ArrayList list3;
     private ArrayList GENDER;
+    private ArrayList MAJOR;
+    private ArrayList HOBBY;
+
     private Spinner spinner;
     private Spinner spinner2;
     private Spinner spinner3;
     private Spinner gender;
+    private Spinner major;
+    private Spinner hobby;
+
     private ImageView profile_img;
     final int PICTURE_REQUEST_CODE = 100;
     private DatabaseReference databaseReference;
@@ -67,6 +76,8 @@ public class Register extends AppCompatActivity {
     private String Name="";
     private Bitmap bmp=null;
     private String sex="";
+    private String Major="";
+    private String Hobby="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +92,8 @@ public class Register extends AppCompatActivity {
         spinner3 = (Spinner)findViewById(R.id.day);
         profile_img = (ImageView)findViewById(R.id.Profile_img);
         gender = (Spinner)findViewById(R.id.gender);
-
+        major = (Spinner)findViewById(R.id.major);
+        hobby = (Spinner)findViewById(R.id.hobby);
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -90,8 +102,12 @@ public class Register extends AppCompatActivity {
         list2 = Month_ADD();
         list3 = new ArrayList();
         GENDER = new ArrayList();
+        MAJOR = new ArrayList();
         GENDER.add("여성");
         GENDER.add("남성");
+        HOBBY = new ArrayList();
+        Major_Add();
+        Hobby_Add();
         Day_Add(0,0,list3); //년, 월일 맞춰서 날짜 배열 리턴 다르게 해줄거임.
 
         //스피너 어댑터 초기화.
@@ -99,11 +115,15 @@ public class Register extends AppCompatActivity {
         spinnerAdapter2 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list2);
         spinnerAdapter3 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list3);
         spinnerAdapter4 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, GENDER);
+        spinnerAdapter5 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, MAJOR);
+        spinnerAdapter6 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, HOBBY);
 
         spinner.setAdapter(spinnerAdapter);
         spinner2.setAdapter(spinnerAdapter2);
         spinner3.setAdapter(spinnerAdapter3);
         gender.setAdapter(spinnerAdapter4);
+        major.setAdapter(spinnerAdapter5);
+        hobby.setAdapter(spinnerAdapter6);
 
         //생일 중 년도 데이터 선택.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -152,6 +172,34 @@ public class Register extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sex =String.valueOf(gender.getItemAtPosition(position));
+                //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //전공 중 선택.
+        major.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Major =String.valueOf(major.getItemAtPosition(position));
+                //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //취미 중 선택.
+        hobby.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Hobby =String.valueOf(hobby.getItemAtPosition(position));
                 //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
             }
 
@@ -262,8 +310,8 @@ public class Register extends AppCompatActivity {
     void createID(String mail, String Password){
         final String email = mail;
         String pwd = Password;
-        Log.d("tag","email : "+id);
-        Log.d("tag","pwd : "+ password);
+        //Log.d("tag","email : "+id);
+        //Log.d("tag","pwd : "+ password);
 
         if(!validateForm(email,pwd)){
             return;
@@ -367,7 +415,7 @@ public class Register extends AppCompatActivity {
 
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
         String str_Img = BitMapToString(Img);
-        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex);
+        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,Major,Hobby);
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
         databaseReference.child("profile/"+second+"/"+last+"/"+first).push().setValue(profile);
 
@@ -388,5 +436,34 @@ public class Register extends AppCompatActivity {
         byte [] b=ByteStream.toByteArray();
         String temp= Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
+    }
+
+    public void Major_Add(){
+        MAJOR.add("컴퓨터공학부");
+        MAJOR.add("정보통신학과");
+        MAJOR.add("임베디드시스템공학과");
+        MAJOR.add("국어국문학과");
+        MAJOR.add("사회복지학과");
+        MAJOR.add("수학과");
+        MAJOR.add("법학부");
+        MAJOR.add("기계공학과");
+        MAJOR.add("경영학부");
+        MAJOR.add("디자인학부");
+        MAJOR.add("국어교육과");
+        MAJOR.add("도시공학과");
+        MAJOR.add("생명공학부");
+        MAJOR.add("동북아국제통상학부");
+    }
+
+    public void Hobby_Add(){
+        HOBBY.add("영화 보기");
+        HOBBY.add("음악 감상");
+        HOBBY.add("독서");
+        HOBBY.add("운동");
+        HOBBY.add("산책");
+        HOBBY.add("게임");
+        HOBBY.add("맛집 탐방");
+        HOBBY.add("여행");
+        HOBBY.add("등산");
     }
 }
