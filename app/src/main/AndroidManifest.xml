@@ -27,5 +27,7 @@
         <activity android:name=".Open_Matching"></activity>
         <activity android:name=".Chat_Room_v2"></activity>
     </application>
-
+    <meta-data
+        android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+        android:value=" face" />
 </manifest>
