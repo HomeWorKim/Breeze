@@ -227,11 +227,11 @@ public class Register extends AppCompatActivity {
                 String pwd = password.getText().toString().trim();
                 Name = name.getText().toString().trim();
                 if(Data_Empty() == 0){  //이름이 비어 있다면.
-                    Toast.makeText(Register.this, "이름을 적어주세요!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "이름을 적어주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if(Data_Empty() == 1){
-                    Toast.makeText(Register.this, "사진을 넣어주세요!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "사진을 넣어주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 createID(email,pwd);
@@ -325,11 +325,11 @@ public class Register extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
                     Toast.makeText(Register.this, "회원 가입을 성공하셨습니다!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(Register.this, "등록 에러.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "등록 에러.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
