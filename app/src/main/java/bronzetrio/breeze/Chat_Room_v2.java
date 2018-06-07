@@ -1,5 +1,5 @@
 package bronzetrio.breeze;
-/*
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -68,4 +68,3 @@ public class Chat_Room_v2 extends AppCompatActivity {
                 });
     }
 }
-*/
