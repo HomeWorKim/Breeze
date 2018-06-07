@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ public class Login extends AppCompatActivity {
     private EditText password;
     private Button login_btn;
     private Button register_btn;
+    private TextView skip_txtview;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class Login extends AppCompatActivity {
         password = (EditText)findViewById(bronzetrio.breeze.R.id.password);
         login_btn = (Button)findViewById(bronzetrio.breeze.R.id.login);
         register_btn = (Button)findViewById(bronzetrio.breeze.R.id.register);
+        skip_txtview = (TextView)findViewById(R.id.skip);
 
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
@@ -48,11 +51,15 @@ public class Login extends AppCompatActivity {
                 else if(i == bronzetrio.breeze.R.id.register){
                     Intent intent = new Intent(Login.this, Register.class);
                     startActivity(intent);
+                } else if(i == R.id.skip){
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
                 }
             }
         };
         login_btn.setOnClickListener(listener);
         register_btn.setOnClickListener(listener);
+        skip_txtview.setOnClickListener(listener);
         //Firebase instance
         mAuth = FirebaseAuth.getInstance();
     }
