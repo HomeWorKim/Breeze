@@ -147,11 +147,11 @@ public class Open_Matching extends AppCompatActivity {
                 else if (i == R.id.accept) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     String uid = user.getUid();
-                    //Intent intent = new Intent(Open_Matching.this, Chat_Room_v2.class);
-                    //intent.putExtra("first_uid",uid);
-                    //intent.putExtra("second_uid",UID.get(pop_idx));
-                    //startActivity(intent);
-                    //finish();
+                    Intent intent = new Intent(Open_Matching.this, Chat_Room_v2.class);
+                    intent.putExtra("first_uid",uid);
+                    intent.putExtra("second_uid",UID.get(pop_idx));
+                    startActivity(intent);
+                    finish();
                 }
 
             }
