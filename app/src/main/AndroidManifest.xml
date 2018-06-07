@@ -23,6 +23,7 @@
         <activity android:name=".Register" />
         <activity android:name=".Login" />
         <activity android:name=".Chat_Room" />
+        <activity android:name=".Open_Matching"></activity>
     </application>
 
 </manifest>
