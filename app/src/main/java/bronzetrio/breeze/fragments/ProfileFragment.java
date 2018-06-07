@@ -160,6 +160,10 @@ public class ProfileFragment extends Fragment {
                     // User is signed out
                     Id.setText("없음");
                     Log.d("tag", "onAuthStateChanged:signed_out");
+                  if(user == null){
+                    Id.setText("You must login first!");
+                    return;
+                  }
                 }
             }
         };

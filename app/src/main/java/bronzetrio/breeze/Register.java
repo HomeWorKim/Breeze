@@ -405,12 +405,20 @@ public class Register extends AppCompatActivity {
 
     //데이터베이스에 데이터 넣기.
     public boolean AddData(String email, String Name, String Year, String Month, String Day, Bitmap Img){
+        int first_idx = email.indexOf("@");
+        String first = email.substring(0,first_idx);
+        String tmp = email.substring(first_idx+1,email.length());
+        Log.d("string",first_idx+"  "+first+"   "+tmp);
+        int second_idx = tmp.indexOf(".");
+        String second = tmp.substring(0,second_idx);
+        String last = tmp.substring(second_idx+1,tmp.length());
+        Log.d("string",second_idx+"  "+second+"   "+last);
+
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
-        FirebaseUser currentUser = mAuth.getCurrentUser();
         String str_Img = BitMapToString(Img);
         Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,Major,Hobby);
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
-        databaseReference.child("profile/"+currentUser.getUid()).push().setValue(profile);
+        databaseReference.child("profile/"+second+"/"+last+"/"+first).push().setValue(profile);
 
 
         return true;
