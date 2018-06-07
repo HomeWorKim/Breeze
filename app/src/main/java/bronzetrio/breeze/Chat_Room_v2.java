@@ -21,6 +21,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Delayed;
+
 public class Chat_Room_v2 extends AppCompatActivity {
     private String first_uid;
     private String second_uid;
@@ -30,10 +36,13 @@ public class Chat_Room_v2 extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView recyclerView;
     private FirebaseRecyclerAdapter<Msg, ViewHolder> mFirebaseAdapter;
+    private FirebaseRecyclerAdapter<Msg, ViewHolder> mFirebaseAdapter2;
     private DatabaseReference databaseReference;
 
-    private boolean flag=false;
+    private boolean flag = false;
+    private boolean flag2 = false;
     private String room_name="";
+    private String room_name2="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +54,8 @@ public class Chat_Room_v2 extends AppCompatActivity {
 
         final String room_type_1 = first_uid + "_" + second_uid;
         final String room_type_2 = second_uid + "_" + first_uid;
-
+        room_name = room_type_1;
+        room_name2 = room_type_2;
         databaseReference = FirebaseDatabase.getInstance().getReference("chatroom");
         //리싸이클러뷰 넣을 LinearLayout 형태로 초기화 할 객체 가져오기.
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -54,39 +64,49 @@ public class Chat_Room_v2 extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.chat_view);
         SendBtn = (Button)findViewById(R.id.sendBtn);
         SendTxt = (EditText)findViewById(R.id.send_txt);
-            if(!flag) {
-                databaseReference
-                        .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild(room_type_1)) {
-                            Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_1 + " exists");
-                            //databaseReference
-                            //        .child(room_type_1)
-                            //        .setValue("true");
-                            room_name = room_type_1;
-                        } else if (dataSnapshot.hasChild(room_type_2)) {
-                            Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_2 + " exists");
-                            //databaseReference
-                            //        .child(room_type_2)
-                            //        .setValue("true");
-                            room_name = room_type_2;
-                        } else {
-                            Log.e("Chat", "sendMessageToFirebaseUser: success");
-                            //databaseReference
-                            //        .child(room_type_1)
-                            //        .setValue("true");
-                            room_name = room_type_1;
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                //Log.d("tag", "profile/"+second+"/"+last);
+                Map<String, Object> taskMap = new HashMap<String, Object>();
+                taskMap.put("/token", 1);
+                databaseReference.updateChildren(taskMap);
+                Map<String, Object> taskMap2 = new HashMap<String, Object>();
+                taskMap2.put("/token", null);
+                databaseReference.updateChildren(taskMap2);
 
+
+            databaseReference
+                    .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild(room_type_1)) {
+                        Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_1 + " exists");
+                        //databaseReference
+                        //        .child(room_type_1)
+                        //        .setValue("true");
+                        room_name = room_type_1;
+                    } else if (dataSnapshot.hasChild(room_type_2)) {
+                        Log.e("Chat", "sendMessageToFirebaseUser: " + room_type_2 + " exists");
+                        //databaseReference
+                        //        .child(room_type_2)
+                        //        .setValue("true");
+                        room_name = room_type_2;
+                    } else {
+                        Log.e("Chat", "sendMessageToFirebaseUser: success");
+                        //databaseReference
+                        //        .child(room_type_1)
+                        //        .setValue("true");
+                        room_name = room_type_1;
                     }
-                });
-                flag = true;
-            }
+                    Log.d("Hu", "flag값 : " + flag);
+                    flag = true;
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
         Log.d("Hu",room_name+"1234 "+databaseReference.child(room_name).getKey());
         //이 어댑터는 Firebase의 database를 지속적으로 감시하며 메시지가 추가 됐을 때, 혹은
         //액티비티가 처음 로딩 됐을 때, 메시지들을 레이아웃에 추가.
@@ -97,10 +117,11 @@ public class Chat_Room_v2 extends AppCompatActivity {
                 protected void populateViewHolder(ViewHolder viewHolder, Msg chatData, int position) {
                     viewHolder.userTv.setText(chatData.getUser());
                     viewHolder.msgTv.setText(chatData.getMSg());
-                    Log.d("message", databaseReference.child(room_name).getKey());
+                    Log.d("message33", databaseReference.child(room_name).getKey());
                     //메시지를 레이아웃에 추가하는 동작들을 여기에 코드로 작성하면 된다고 함.
                 }
             };
+
             //Log.d("message", mFirebaseAdapter.getItem(0).getMSg());
             //onItemRangeInserted()안의 코드는 메시지가 많이 와서 화면에 표시할 수 있는 양보다
             //더 많은 양의 아이템들이 추가 됐을 때, 스크롤을 가장 아래로 내려주는 코드
@@ -116,6 +137,7 @@ public class Chat_Room_v2 extends AppCompatActivity {
                     }
                 }
             });
+            Log.d("Hu2",room_name+"1234 "+flag);
             recyclerView.setLayoutManager(mLinearLayoutManager);
             recyclerView.setAdapter(mFirebaseAdapter);
 
@@ -128,6 +150,7 @@ public class Chat_Room_v2 extends AppCompatActivity {
                     Msg chatData = new Msg(first_uid,msg);
                     //기본 database 하위 message 라는 child chatData를 list로 만들기
                     databaseReference.child(room_name).push().setValue(chatData);
+                    databaseReference.child(room_name2).push().setValue(chatData);
                     SendTxt.setText("");
                 }
 
