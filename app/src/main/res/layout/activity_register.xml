@@ -16,7 +16,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp">
+        android:layout_height="120dp">
 
         <!--<ImageView-->
             <!--android:layout_width="100dp"-->
@@ -109,39 +109,43 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="생일"
+        android:textAlignment="center"
+        android:paddingTop="12dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginRight="30dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#00000000"
-        android:padding="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="12dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="생일"
-            android:textAlignment="center"
-            android:layout_gravity="center"/>
+        android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/Birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Spinner>
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:text="월"/>
         <Spinner
             android:id="@+id/Month"
-            android:layout_width="15dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Spinner>
         <TextView
-            android:layout_width="15dp"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:text="일"/>
         <Spinner
@@ -157,23 +161,31 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         />
+
 <ImageView
     android:id="@+id/Profile_img"
-    android:layout_width="250dp"
-    android:layout_height="250dp"
+    android:layout_width="130dp"
+    android:layout_height="130dp"
     android:scaleType="fitXY"
-    android:src="@drawable/ic_person"
+    android:src="@drawable/ic_photo"
     android:layout_gravity="center"
+    android:layout_marginTop="20dp"
     />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자신의 프로필 사진을 선택하세요."
+        android:layout_gravity="center"/>
+
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/rectangle"
+        android:background="@drawable/empty_purple_rectangle"
         android:padding="14dp"
         android:text="가입"
         android:textAlignment="center"
