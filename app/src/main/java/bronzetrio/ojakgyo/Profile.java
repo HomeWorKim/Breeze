@@ -11,16 +11,18 @@ public class Profile {
     String year;
     String month;
     String day;
-    Bitmap img;
+    String img;
+    String sex;
     public Profile(){
 
     }
-    public Profile(String name, String year, String month, String day, Bitmap img){
+    public Profile(String name, String year, String month, String day, String img,String sex){
         this.name = name;
         this.year = year;
         this.month = month;
         this.day = day;
         this.img = img;
+        this.sex = sex;
     }
     public String getName(){
         return name;
@@ -35,10 +37,12 @@ public class Profile {
     public String getDay(){
         return day;
     }
-    public Bitmap getImg(){
+    public String getImg(){
         return img;
     }
-
+    public String getSex(){
+        return sex;
+    }
     public void setName(String name) {
         this.name = name;
     }
@@ -51,7 +55,7 @@ public class Profile {
         this.month = month;
     }
 
-    public void setImg(Bitmap img) {
+    public void setImg(String img) {
 
         this.img = img;
     }
@@ -59,5 +63,9 @@ public class Profile {
     public void setDay(String day) {
 
         this.day = day;
+    }
+    public void setSex(String sex) {
+
+        this.sex = sex;
     }
 }

@@ -3,12 +3,14 @@ package bronzetrio.ojakgyo;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,12 +47,15 @@ public class Register extends AppCompatActivity {
     private ArrayAdapter spinnerAdapter;
     private ArrayAdapter spinnerAdapter2;
     private ArrayAdapter spinnerAdapter3;
+    private ArrayAdapter spinnerAdapter4;
     private ArrayList list1;
     private ArrayList list2;
     private ArrayList list3;
+    private ArrayList GENDER;
     private Spinner spinner;
     private Spinner spinner2;
     private Spinner spinner3;
+    private Spinner gender;
     private ImageView profile_img;
     final int PICTURE_REQUEST_CODE = 100;
     private DatabaseReference databaseReference;
@@ -60,6 +66,7 @@ public class Register extends AppCompatActivity {
     private String Birth_Day="";
     private String Name="";
     private Bitmap bmp=null;
+    private String sex="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +80,7 @@ public class Register extends AppCompatActivity {
         spinner2 = (Spinner)findViewById(R.id.Month);
         spinner3 = (Spinner)findViewById(R.id.day);
         profile_img = (ImageView)findViewById(R.id.Profile_img);
+        gender = (Spinner)findViewById(R.id.gender);
 
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -81,16 +89,21 @@ public class Register extends AppCompatActivity {
         list1 = Year_Add();
         list2 = Month_ADD();
         list3 = new ArrayList();
+        GENDER = new ArrayList();
+        GENDER.add("여성");
+        GENDER.add("남성");
         Day_Add(0,0,list3); //년, 월일 맞춰서 날짜 배열 리턴 다르게 해줄거임.
 
         //스피너 어댑터 초기화.
         spinnerAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list1);
         spinnerAdapter2 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list2);
         spinnerAdapter3 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list3);
+        spinnerAdapter4 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, GENDER);
 
         spinner.setAdapter(spinnerAdapter);
         spinner2.setAdapter(spinnerAdapter2);
         spinner3.setAdapter(spinnerAdapter3);
+        gender.setAdapter(spinnerAdapter4);
 
         //생일 중 년도 데이터 선택.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -134,6 +147,19 @@ public class Register extends AppCompatActivity {
             }
         });
 
+        //남녀 중 선택.
+        gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sex =String.valueOf(gender.getItemAtPosition(position));
+                //Toast.makeText(Register.this,"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         //이미지 눌렀을 때,
         profile_img.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -238,9 +264,6 @@ public class Register extends AppCompatActivity {
         String pwd = Password;
         Log.d("tag","email : "+id);
         Log.d("tag","pwd : "+ password);
-        AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
-
-
 
         if(!validateForm(email,pwd)){
             return;
@@ -343,11 +366,27 @@ public class Register extends AppCompatActivity {
         Log.d("string",second_idx+"  "+second+"   "+last);
 
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
-        Profile profile = new Profile(Name, Year, Month, Day, Img);
+        String str_Img = BitMapToString(Img);
+        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex);
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
         databaseReference.child("profile/"+second+"/"+last+"/"+first).push().setValue(profile);
 
 
         return true;
+    }
+
+    //Bitmap 을 String 형태로 변환.
+    public String BitMapToString(Bitmap bitmap){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        int dstWidth = bitmap.getWidth()/4;
+        int dstHeight = bitmap.getHeight()/4;
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, dstWidth, dstHeight, true);
+
+        ByteArrayOutputStream ByteStream=new  ByteArrayOutputStream();
+        resized.compress(Bitmap.CompressFormat.PNG,20, ByteStream);
+        byte [] b=ByteStream.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
     }
 }

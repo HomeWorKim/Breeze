@@ -2,11 +2,13 @@ package bronzetrio.ojakgyo.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import bronzetrio.ojakgyo.Profile;
 import bronzetrio.ojakgyo.R;
@@ -58,7 +62,7 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private Bitmap bmp;
     private OnFragmentInteractionListener mListener;
 
     public ProfileFragment() {
@@ -109,26 +113,39 @@ public class ProfileFragment extends Fragment {
                 int second_idx = tmp.indexOf(".");
                 final String second = tmp.substring(0,second_idx);
                 final String last = tmp.substring(second_idx+1,tmp.length());
-                Log.d("tag", "짜증나1");
-                databaseReference = FirebaseDatabase.getInstance().getReference();
-                databaseReference = databaseReference.child("profile/"+second+"/"+last);
 
+                databaseReference = FirebaseDatabase.getInstance().getReference("profile/"+second+"/"+last+"/"+first);
+                Log.d("tag", "profile/"+second+"/"+last);
+                Map<String, Object> taskMap = new HashMap<String, Object>();
+                taskMap.put("/token",1);
+                databaseReference.updateChildren(taskMap);
+                Map<String, Object> taskMap2 = new HashMap<String, Object>();
+                taskMap2.put("/token",null);
+                databaseReference.updateChildren(taskMap2);
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d("tag", "짜증나" + "   "+ dataSnapshot.getValue());
-                        Log.d("tag",dataSnapshot.getKey().toString());
+                        //Profile tmp = dataSnapshot.getValue(Profile.class);
+                        //Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                        //String a = (String) map.get("day");
+                        //String b = (String) map.get("month");
+                        //textView.append(b + " -- " + a + "\n");
+                        String a="",b="",c="",d="",e="";
 
-                        Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
-                        //users의 모든 자식들의 key값과 value 값들을 iterator로 참조합니다.
-
-                        while (child.hasNext()) {
-                            if(child.next().getKey() == "asdf"){
-
-                            }
-                            Log.d("tag", "짜증나" + child.next().getValue()+" "+ child.next().getKey());
-
+                        for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            a = (String) dataSnapshot1.child("day").getValue();
+                            b = (String) dataSnapshot1.child("month").getValue();
+                            c = (String) dataSnapshot1.child("year").getValue();
+                            d = (String) dataSnapshot1.child("name").getValue();
+                            e = (String) dataSnapshot1.child("sex").getValue();
+                            String str_bmp = (String)dataSnapshot1.child("img").getValue();
+                            bmp = StringToBitMap(str_bmp);
                         }
+                        String birth = c+"-"+b+"-"+a;
+                        Id.setText(mAuth.getCurrentUser().getEmail());
+                        Name.setText(d);
+                        Birthday.setText(birth);
+                        profile_img.setImageBitmap(bmp);
                     }
 
                     @Override
@@ -154,6 +171,16 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
