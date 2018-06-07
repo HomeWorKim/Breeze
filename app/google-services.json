@@ -2,15 +2,50 @@
   "project_info": {
     "project_number": "392272175453",
     "firebase_url": "https://ojakgyo-9cca3.firebaseio.com",
-    "project_id": "breeze-9cca3",
-    "storage_bucket": "breeze-9cca3.appspot.com"
+    "project_id": "ojakgyo-9cca3",
+    "storage_bucket": "ojakgyo-9cca3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:392272175453:android:929a5bd9270c30c3",
+        "mobilesdk_app_id": "1:392272175453:android:68a51a72cbfd342d",
         "android_client_info": {
           "package_name": "bronzetrio.breeze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392272175453-j8rb6ra5dsogf0d9cnsdbgp5ec0u673d.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "392272175453-j8rb6ra5dsogf0d9cnsdbgp5ec0u673d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBp7_88utxChfBfxPWRn85gak0zNUlVm8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392272175453:android:929a5bd9270c30c3",
+        "android_client_info": {
+          "package_name": "bronzetrio.ojakgyo"
         }
       },
       "oauth_client": [
@@ -18,7 +53,7 @@
           "client_id": "392272175453-tb63jajijmg13o6h332u40sju8358rph.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "bronzetrio.breeze",
+            "package_name": "bronzetrio.ojakgyo",
             "certificate_hash": "9dc313de97848aea2f485ba1bd14a9d5a4a5e171"
           }
         },
