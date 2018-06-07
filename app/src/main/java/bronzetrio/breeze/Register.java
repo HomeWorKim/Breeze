@@ -254,8 +254,8 @@ public class Register extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         //로그인 되어있다면.
         if (user != null) {
-        //    txtStatus.setText("User Email: " + user.getEmail() + "(verified: " + user.isEmailVerified() + ")");
-        //    txtDetail.setText("Firebase User ID: " + user.getUid());
+            //    txtStatus.setText("User Email: " + user.getEmail() + "(verified: " + user.isEmailVerified() + ")");
+            //    txtDetail.setText("Firebase User ID: " + user.getUid());
 
 //            findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
 //            findViewById(R.id.email_password_fields).setVisibility(View.GONE);
@@ -323,16 +323,16 @@ public class Register extends AppCompatActivity {
                 //Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
                 //Log.d("TAG", "error" + task.getException());
 
-                    if (task.isSuccessful()) {
-                        AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
-                        Toast.makeText(Register.this, "회원 가입을 성공하셨습니다!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Register.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(Register.this, "등록 에러.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                if (task.isSuccessful()) {
+                    AddData(email, Name, Birth_Year, Birth_Month, Birth_Day, bmp);
+                    Toast.makeText(Register.this, "회원 가입을 성공하셨습니다!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(Register.this, "등록 에러.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
             }
         });
@@ -391,7 +391,7 @@ public class Register extends AppCompatActivity {
                     }catch(FileNotFoundException e){
                         e.printStackTrace();
                     }catch(IOException e){
-                       e.printStackTrace();
+                        e.printStackTrace();
                     }
                     profile_img.setImageBitmap(bmp);
                 }
@@ -405,21 +405,13 @@ public class Register extends AppCompatActivity {
 
     //데이터베이스에 데이터 넣기.
     public boolean AddData(String email, String Name, String Year, String Month, String Day, Bitmap Img){
-        int first_idx = email.indexOf("@");
-        String first = email.substring(0,first_idx);
-        String tmp = email.substring(first_idx+1,email.length());
-        Log.d("string",first_idx+"  "+first+"   "+tmp);
-        int second_idx = tmp.indexOf(".");
-        String second = tmp.substring(0,second_idx);
-        String last = tmp.substring(second_idx+1,tmp.length());
-        Log.d("string",second_idx+"  "+second+"   "+last);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
         String str_Img = BitMapToString(Img);
         Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,Major,Hobby);
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
-        databaseReference.child("profile/"+second+"/"+last+"/"+first).push().setValue(profile);
-
+        databaseReference.child("profile/"+currentUser.getUid()).push().setValue(profile);
 
         return true;
     }
