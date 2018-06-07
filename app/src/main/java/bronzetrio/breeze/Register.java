@@ -125,6 +125,7 @@ public class Register extends AppCompatActivity {
         major.setAdapter(spinnerAdapter5);
         hobby.setAdapter(spinnerAdapter6);
 
+        spinner.setSelection(14);
         //생일 중 년도 데이터 선택.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
