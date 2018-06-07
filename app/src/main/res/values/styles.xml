@@ -11,7 +11,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="OjakgyoTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+    <style name="BreezeTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorSecondary">@color/text_color_secondary</item>
         <item name="android:textColorPrimary">@color/text_color_primary</item>
         <item name="android:statusBarColor">@color/text_color_primary</item>

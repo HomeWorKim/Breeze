@@ -4,14 +4,12 @@
     android:layout_height="match_parent">
     <item
         android:id="@+id/navigation_match"
-        android:icon="@drawable/ic_public"
-        android:title="Match" />
+        android:icon="@drawable/ic_public" />
 
 
     <item
         android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_chat"
-        android:title="Chat" />
+        android:icon="@drawable/ic_chat"/>
 
     <item
         android:id="@+id/navigation_profile"

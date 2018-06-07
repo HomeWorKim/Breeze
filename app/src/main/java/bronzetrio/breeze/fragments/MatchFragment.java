@@ -1,6 +1,5 @@
-package bronzetrio.ojakgyo.fragments;
+package bronzetrio.breeze.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,11 +15,10 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import bronzetrio.ojakgyo.Chat_Room;
-import bronzetrio.ojakgyo.Login;
-import bronzetrio.ojakgyo.MainActivity;
-import bronzetrio.ojakgyo.R;
-import bronzetrio.ojakgyo.Register;
+import bronzetrio.breeze.Chat_Room;
+import bronzetrio.breeze.Login;
+import bronzetrio.breeze.R;
+import bronzetrio.breeze.Register;
 
 /**
  * A simple {@link Fragment} subclass.

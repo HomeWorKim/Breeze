@@ -1,4 +1,4 @@
-package bronzetrio.ojakgyo;
+package bronzetrio.breeze;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,23 +29,23 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(bronzetrio.breeze.R.layout.activity_login);
 
-        Id_box = (EditText)findViewById(R.id.Id);
-        password = (EditText)findViewById(R.id.password);
-        login_btn = (Button)findViewById(R.id.login);
-        register_btn = (Button)findViewById(R.id.register);
+        Id_box = (EditText)findViewById(bronzetrio.breeze.R.id.Id);
+        password = (EditText)findViewById(bronzetrio.breeze.R.id.password);
+        login_btn = (Button)findViewById(bronzetrio.breeze.R.id.login);
+        register_btn = (Button)findViewById(bronzetrio.breeze.R.id.register);
 
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 int i = v.getId();
-                if(i == R.id.login) {
+                if(i == bronzetrio.breeze.R.id.login) {
                     String email = Id_box.getText().toString().trim();
                     String pwd = password.getText().toString().trim();
                     signIn(email,pwd);
                 }
-                else if(i == R.id.register){
+                else if(i == bronzetrio.breeze.R.id.register){
                     Intent intent = new Intent(Login.this, Register.class);
                     startActivity(intent);
                 }

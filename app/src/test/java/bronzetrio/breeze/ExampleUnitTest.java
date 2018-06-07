@@ -1,4 +1,4 @@
-package bronzetrio.ojakgyo;
+package bronzetrio.breeze;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package bronzetrio.ojakgyo;
+package bronzetrio.breeze;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

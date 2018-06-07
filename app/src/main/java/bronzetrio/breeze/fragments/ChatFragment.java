@@ -1,9 +1,7 @@
-package bronzetrio.ojakgyo.fragments;
+package bronzetrio.breeze.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,14 +15,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import bronzetrio.ojakgyo.Chat_Room;
-import bronzetrio.ojakgyo.Chat_list;
-import bronzetrio.ojakgyo.Msg;
-import bronzetrio.ojakgyo.R;
-import bronzetrio.ojakgyo.fragments.dummy.DummyContent;
-import bronzetrio.ojakgyo.fragments.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import bronzetrio.breeze.Chat_list;
+import bronzetrio.breeze.R;
+import bronzetrio.breeze.fragments.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.

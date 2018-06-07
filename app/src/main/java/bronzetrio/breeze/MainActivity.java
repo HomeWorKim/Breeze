@@ -1,20 +1,16 @@
-package bronzetrio.ojakgyo;
+package bronzetrio.breeze;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import bronzetrio.ojakgyo.fragments.ChatFragment;
-import bronzetrio.ojakgyo.fragments.MatchFragment;
-import bronzetrio.ojakgyo.fragments.ProfileFragment;
-import bronzetrio.ojakgyo.fragments.SettingsFragment;
+import bronzetrio.breeze.fragments.ChatFragment;
+import bronzetrio.breeze.fragments.MatchFragment;
+import bronzetrio.breeze.fragments.ProfileFragment;
+import bronzetrio.breeze.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,16 +24,16 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment = null;
             switch (item.getItemId()) {
-                case R.id.navigation_match:
+                case bronzetrio.breeze.R.id.navigation_match:
                     fragment = new MatchFragment();
                     break;
-                case R.id.navigation_chat:
+                case bronzetrio.breeze.R.id.navigation_chat:
                     fragment = new ChatFragment();
                     break;
-                case R.id.navigation_profile:
+                case bronzetrio.breeze.R.id.navigation_profile:
                     fragment = new ProfileFragment();
                     break;
-                case R.id.navigation_settings:
+                case bronzetrio.breeze.R.id.navigation_settings:
                     fragment = new SettingsFragment();
                     break;
             }
@@ -49,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(bronzetrio.breeze.R.layout.activity_main);
 
 
 //        register_btn = (Button)findViewById(R.id.register);
@@ -81,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 //        login_btn.setOnClickListener(listener);
 //        chat_btn.setOnClickListener(listener);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(bronzetrio.breeze.R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
+                    .replace(bronzetrio.breeze.R.id.fragment_container, fragment)
                     .commit();
             return true;
         }

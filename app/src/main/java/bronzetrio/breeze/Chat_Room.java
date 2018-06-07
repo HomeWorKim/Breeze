@@ -1,4 +1,4 @@
-package bronzetrio.ojakgyo;
+package bronzetrio.breeze;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -26,7 +25,7 @@ public class Chat_Room extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat__room);
+        setContentView(bronzetrio.breeze.R.layout.activity_chat__room);
 
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -35,13 +34,13 @@ public class Chat_Room extends AppCompatActivity {
         //리니어레이아웃 옵션 추가
         mLinearLayoutManager.setStackFromEnd(true);
 
-        recyclerView = (RecyclerView)findViewById(R.id.msgLv);
-        msgSendBtn = (Button)findViewById(R.id.sendMsgBtn);
-        msgEt = (EditText)findViewById(R.id.msgEt);
+        recyclerView = (RecyclerView)findViewById(bronzetrio.breeze.R.id.msgLv);
+        msgSendBtn = (Button)findViewById(bronzetrio.breeze.R.id.sendMsgBtn);
+        msgEt = (EditText)findViewById(bronzetrio.breeze.R.id.msgEt);
 
         //이 어댑터는 Firebase의 database를 지속적으로 감시하며 메시지가 추가 됐을 때, 혹은
         //액티비티가 처음 로딩 됐을 때, 메시지들을 레이아웃에 추가.
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Msg, ViewHolder>(Msg.class, R.layout.msg_item, ViewHolder.class, databaseReference.child("sample")) {
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<Msg, ViewHolder>(Msg.class, bronzetrio.breeze.R.layout.msg_item, ViewHolder.class, databaseReference.child("sample")) {
             @Override
             protected void populateViewHolder(ViewHolder viewHolder, Msg chatData, int position) {
                 viewHolder.userTv.setText(chatData.getUser());
@@ -90,8 +89,8 @@ public class Chat_Room extends AppCompatActivity {
         TextView userTv;
         public ViewHolder(View v){
             super(v);
-            msgTv = (TextView)v.findViewById(R.id.msgTv);
-            userTv = (TextView)v.findViewById(R.id.userTv);
+            msgTv = (TextView)v.findViewById(bronzetrio.breeze.R.id.msgTv);
+            userTv = (TextView)v.findViewById(bronzetrio.breeze.R.id.userTv);
         }
     }
 }

@@ -1,4 +1,4 @@
-package bronzetrio.ojakgyo;
+package bronzetrio.breeze;
 
 import android.content.ClipData;
 import android.content.Intent;
@@ -81,19 +81,19 @@ public class Register extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(bronzetrio.breeze.R.layout.activity_register);
 
-        id = (EditText)findViewById(R.id.id);
-        password = (EditText)findViewById(R.id.password);
-        name = (EditText)findViewById(R.id.name);
-        register = (Button)findViewById(R.id.register);
-        spinner = (Spinner)findViewById(R.id.Birthday);
-        spinner2 = (Spinner)findViewById(R.id.Month);
-        spinner3 = (Spinner)findViewById(R.id.day);
-        profile_img = (ImageView)findViewById(R.id.Profile_img);
-        gender = (Spinner)findViewById(R.id.gender);
-        major = (Spinner)findViewById(R.id.major);
-        hobby = (Spinner)findViewById(R.id.hobby);
+        id = (EditText)findViewById(bronzetrio.breeze.R.id.id);
+        password = (EditText)findViewById(bronzetrio.breeze.R.id.password);
+        name = (EditText)findViewById(bronzetrio.breeze.R.id.name);
+        register = (Button)findViewById(bronzetrio.breeze.R.id.register);
+        spinner = (Spinner)findViewById(bronzetrio.breeze.R.id.Birthday);
+        spinner2 = (Spinner)findViewById(bronzetrio.breeze.R.id.Month);
+        spinner3 = (Spinner)findViewById(bronzetrio.breeze.R.id.day);
+        profile_img = (ImageView)findViewById(bronzetrio.breeze.R.id.Profile_img);
+        gender = (Spinner)findViewById(bronzetrio.breeze.R.id.gender);
+        major = (Spinner)findViewById(bronzetrio.breeze.R.id.major);
+        hobby = (Spinner)findViewById(bronzetrio.breeze.R.id.hobby);
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -111,12 +111,12 @@ public class Register extends AppCompatActivity {
         Day_Add(0,0,list3); //년, 월일 맞춰서 날짜 배열 리턴 다르게 해줄거임.
 
         //스피너 어댑터 초기화.
-        spinnerAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list1);
-        spinnerAdapter2 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list2);
-        spinnerAdapter3 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list3);
-        spinnerAdapter4 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, GENDER);
-        spinnerAdapter5 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, MAJOR);
-        spinnerAdapter6 = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, HOBBY);
+        spinnerAdapter = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, list1);
+        spinnerAdapter2 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, list2);
+        spinnerAdapter3 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, list3);
+        spinnerAdapter4 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, GENDER);
+        spinnerAdapter5 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, MAJOR);
+        spinnerAdapter6 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, HOBBY);
 
         spinner.setAdapter(spinnerAdapter);
         spinner2.setAdapter(spinnerAdapter2);

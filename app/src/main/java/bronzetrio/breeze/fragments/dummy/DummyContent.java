@@ -1,4 +1,4 @@
-package bronzetrio.ojakgyo.fragments.dummy;
+package bronzetrio.breeze.fragments.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
