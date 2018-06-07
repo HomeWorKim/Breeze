@@ -494,7 +494,7 @@ public class ProfileFragment extends Fragment {
 
                                                 profile_img.setImageBitmap(bmp);
                                                 Map<String, Object> taskMap = new HashMap<>();
-
+                                                max = 100-(10000-10000*max)*8;
                                                 taskMap.put("day",a);
                                                 taskMap.put("hobby",b);
                                                 taskMap.put("img",BitMapToString(bmp));
