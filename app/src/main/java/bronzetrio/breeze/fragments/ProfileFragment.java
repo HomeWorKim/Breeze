@@ -237,7 +237,7 @@ public class ProfileFragment extends Fragment {
                             e = (String) dataSnapshot1.child("sex").getValue();
                             f = (String) dataSnapshot1.child("major").getValue();
                             g = (String) dataSnapshot1.child("hobby").getValue();
-                            h = (String) dataSnapshot1.child("talent").getValue();
+                            h = (String) dataSnapshot1.child("likey").getValue();
                             String str_bmp = (String)dataSnapshot1.child("img").getValue();
                             bmp = StringToBitMap(str_bmp);
                         }
