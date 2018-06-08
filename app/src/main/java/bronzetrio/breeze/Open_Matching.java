@@ -41,6 +41,7 @@ public class Open_Matching extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
 
+    private Profile profile;
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> majors = new ArrayList<>();
     ArrayList<String> hobbys = new ArrayList<>();
@@ -48,6 +49,8 @@ public class Open_Matching extends AppCompatActivity {
     ArrayList<String> sexes = new ArrayList<>();
     ArrayList<String> imges = new ArrayList<>();
     ArrayList<String> UID = new ArrayList<>();
+    ArrayList<String> Talents = new ArrayList<>();
+    ArrayList<String> Sim = new ArrayList<>();
     int pop_idx = 0;
 
     @Override
@@ -85,6 +88,10 @@ public class Open_Matching extends AppCompatActivity {
                                 {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     if(first.getKey().toString().equals(user.getUid())){
+                                        profile = new Profile("","","","","",(String) second.child("sex").getValue(),
+                                                (String) second.child("major").getValue(),
+                                                (String) second.child("hobby").getValue(),
+                                                (String) second.child("likey").getValue());
                                         continue;
                                     }
 
@@ -105,8 +112,13 @@ public class Open_Matching extends AppCompatActivity {
                                         talent=(String) second.child("talent").getValue();
                                         similarity_score = (second.child("similarity").getValue())+"%";
                                         similarity_tv.setText(talent+" 와 "+similarity_score+" 매칭");
+
+                                        Talents.add(talent);
+                                        Sim.add(similarity_score);
                                     }catch (NullPointerException e){
                                         Log.e(TAG,"error : "+e);
+                                        Talents.add(" ");
+                                        Sim.add(" ");
                                     }
 
                                     names.add(name);
@@ -120,7 +132,7 @@ public class Open_Matching extends AppCompatActivity {
                                 }
                             }
                         }
-                        int random = (int) (Math.random() * (names.size() - 1));
+                        int random = Match_Algo();
                         Name.setText(names.get(random));
                         profile_img.setImageBitmap(StringToBitMap(imges.get(random)));
                         pop_idx = random;
@@ -144,6 +156,7 @@ public class Open_Matching extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "매칭을 진행 할 수 없습니다.", Toast.LENGTH_SHORT).show();
 
                     } else {
+
                         names.remove(pop_idx);
                         majors.remove(pop_idx);
                         hobbys.remove(pop_idx);
@@ -200,5 +213,27 @@ public class Open_Matching extends AppCompatActivity {
             e.getMessage();
             return null;
         }
+    }
+
+    public int Match_Algo(){
+        if(Talents.size()>0) {
+            String like = profile.getTalent();
+            ArrayList<Double> sim = new ArrayList<>();
+            ArrayList<Integer> sim_idx = new ArrayList<>();
+            for (int x = 0; x < Talents.size(); x++) {
+                if (Talents.get(x).equals(like)) {
+                    sim.add(Double.parseDouble(Sim.get(x)));
+                    sim_idx.add(x);
+                }
+            }
+            int max = 0;
+            for (int i = 0; i < sim.size(); i++) {
+                if (sim.get(i) > sim.get(max)) {
+                    max = i;
+                }
+            }
+            return max;
+        }
+        return 0;
     }
 }
