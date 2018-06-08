@@ -228,7 +228,7 @@ public class Open_Matching extends AppCompatActivity {
 
     public int Match_Algo(){
         if(Talents.size()>0) {
-            String like = profile.getTalent();
+            String like = profile.getLikey();
             ArrayList<Double> sim = new ArrayList<>();
             ArrayList<Integer> sim_idx = new ArrayList<>();
             for (int x = 0; x < Talents.size(); x++) {

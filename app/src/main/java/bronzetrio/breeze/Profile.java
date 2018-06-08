@@ -31,12 +31,12 @@ public class Profile {
         this.likey = likey;
     }
 
-    public String getTalent() {
+    public String getLikey() {
         return likey;
     }
 
-    public void setTalent(String talent) {
-        this.likey = talent;
+    public void setLikey(String likey) {
+        this.likey = likey;
     }
 
     public String getName(){
