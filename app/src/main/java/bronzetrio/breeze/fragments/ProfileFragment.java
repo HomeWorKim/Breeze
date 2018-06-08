@@ -237,7 +237,7 @@ public class ProfileFragment extends Fragment {
                             e = (String) dataSnapshot1.child("sex").getValue();
                             f = (String) dataSnapshot1.child("major").getValue();
                             g = (String) dataSnapshot1.child("hobby").getValue();
-                            h = (String) dataSnapshot1.child("likey").getValue();
+                            h = (String) dataSnapshot1.child("talent").getValue();
                             String str_bmp = (String)dataSnapshot1.child("img").getValue();
                             bmp = StringToBitMap(str_bmp);
                         }
@@ -250,6 +250,7 @@ public class ProfileFragment extends Fragment {
                         Major.setText(f);
                         Hobby.setText(g);
                         Talent.setText(h);
+                        setTestPicture();
                     }
 
                     @Override
@@ -638,6 +639,81 @@ public class ProfileFragment extends Fragment {
         matrix.postRotate(degree);
         // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
         return Bitmap.createBitmap(src, 0, 0, src.getWidth(),src.getHeight(), matrix, true);
+    }
+
+    public void setTestPicture(){
+        String name = Talent.getText().toString();
+        if(name.equals("gdragon")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.gd1));
+        }else if(name.equals("gdragon1")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.gd1));
+        }else if(name.equals("hyuna")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.hyuna));
+        }else if(name.equals("hyuna2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.hyuna));
+        }else if(name.equals("irin")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.irin1));
+        }else if(name.equals("irin2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.irin1));
+        }else if(name.equals("iu")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.iu1));
+        }else if(name.equals("iu2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.iu1));
+        }else if(name.equals("kangdaniel")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kangdaniel));
+        }else if(name.equals("kangdaniel2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kangdaniel));
+        }else if(name.equals("kimgoeun")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kimgoeun1));
+        }else if(name.equals("kimsuhyun")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kimsuhyun1));
+        }else if(name.equals("kimsuhyun2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kimsuhyun1));
+        }else if(name.equals("kimwoobin")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kimwoobin1));
+        }else if(name.equals("kimwoobin2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kimwoobin1));
+        }else if(name.equals("kyungri")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kyungri));
+        }else if(name.equals("kyungri2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.kyungri));
+        }else if(name.equals("onebin")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.onebin));
+        }else if(name.equals("onebin2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.onebin));
+        }else if(name.equals("parkbogum")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.parkbogum));
+        }else if(name.equals("parkbogum2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.parkbogum));
+        }else if(name.equals("seulgi")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.seulgi));
+        }else if(name.equals("seulgi2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.seulgi));
+        }else if(name.equals("songjihyo")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.songjihyo));
+        }else if(name.equals("songjihyo2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.songjihyo));
+        }else if(name.equals("songjungki")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.songjki1));
+        }else if(name.equals("songjungki2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.songjki1));
+        }else if(name.equals("taeyang")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.taeyang));
+        }else if(name.equals("taeyang2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.taeyang));
+        }else if(name.equals("v")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.vy));
+        }else if(name.equals("v2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.vy));
+        }else if(name.equals("yoona")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.yoona));
+        }else if(name.equals("zwu")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.zzw1));
+        }else if(name.equals("zwu2")){
+            testPicture.setImageDrawable(getResources().getDrawable(R.drawable.zzw1));
+        }
+
+
     }
 
 }

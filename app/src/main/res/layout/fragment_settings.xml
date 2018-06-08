@@ -36,8 +36,8 @@
 
         <TextView
             android:id="@+id/ranking1_taltv"
-            android:layout_width="50dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/ranking1_img"
             android:layout_alignTop="@+id/ranking1_img"
             android:text="연예인"
@@ -45,8 +45,8 @@
 
         <TextView
             android:id="@+id/ranking1_simtv"
-            android:layout_width="50dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ranking1_img"
             android:layout_below="@+id/ranking1_taltv"
             android:text="20%"
@@ -67,8 +67,8 @@
 
         <TextView
             android:id="@+id/ranking2_taltv"
-            android:layout_width="50dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/ranking2_img"
             android:layout_alignTop="@+id/ranking2_img"
             android:text="연예인"
@@ -76,8 +76,8 @@
 
         <TextView
             android:id="@+id/ranking2_simtv"
-            android:layout_width="50dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/ranking2_img"
             android:layout_below="@+id/ranking2_taltv"
             android:text="20%"
@@ -95,8 +95,8 @@
 
         <TextView
             android:id="@+id/ranking3_taltv"
-            android:layout_width="50dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/ranking3_img"
             android:layout_alignTop="@+id/ranking3_img"
             android:text="연예인"
@@ -104,8 +104,8 @@
 
         <TextView
             android:id="@+id/ranking3_simtv"
-            android:layout_width="50dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ranking3_img"
             android:layout_below="@+id/ranking3_taltv"
             android:text="20%"
