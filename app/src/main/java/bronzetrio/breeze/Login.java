@@ -62,6 +62,18 @@ public class Login extends AppCompatActivity {
         skip_txtview.setOnClickListener(listener);
         //Firebase instance
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null) {
+            Log.d("로근:", "");
+        }else{
+            Log.d("비로근:", "");
+        }
+            //if (mAuth != null)
+        //{
+        //    Intent intent = new Intent(Login.this, MainActivity.class);
+        //    startActivity(intent);
+        //    finish();
+        //}
     }
 
     private void signIn(String email, String password){

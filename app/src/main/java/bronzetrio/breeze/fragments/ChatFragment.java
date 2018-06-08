@@ -1,5 +1,6 @@
 package bronzetrio.breeze.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,6 +30,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.Inflater;
 
+import bronzetrio.breeze.Chat_Room_v2;
 import bronzetrio.breeze.Chat_list;
 import bronzetrio.breeze.R;
 import bronzetrio.breeze.fragments.dummy.DummyContent.DummyItem;
@@ -54,6 +57,7 @@ public class ChatFragment extends Fragment {
     private LayoutInflater inflater;
     private ArrayAdapter Adapter;
     private ArrayList<String> a;
+    private ArrayList<String> b;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -75,6 +79,7 @@ public class ChatFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         a=new ArrayList<>();
+        b = new ArrayList<>();
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference("chatroom");
         mAuth = FirebaseAuth.getInstance();
@@ -85,6 +90,9 @@ public class ChatFragment extends Fragment {
         Map<String, Object> taskMap2 = new HashMap<String, Object>();
         taskMap2.put("/token",null);
         databaseReference.updateChildren(taskMap2);
+        if(user.getUid().isEmpty()){
+            return;
+        }
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -94,7 +102,7 @@ public class ChatFragment extends Fragment {
                     int idx = dataSnapshot1.getKey().indexOf("_");
                     String first = dataSnapshot1.getKey().substring(0,idx);
                     String second = dataSnapshot1.getKey().substring(idx+1,dataSnapshot1.getKey().length());
-                    Log.d("chat : ",first);
+                    Log.d("chat : ",dataSnapshot1.getValue().toString());
                     if(user.getUid().equals(first)){
                         String tmp = first +"와"+second+"의 방";
 
@@ -106,6 +114,21 @@ public class ChatFragment extends Fragment {
                 Log.d("a 사이즈3 : ",Integer.toString(a.size()));
                 Adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, a);
                 listview.setAdapter(Adapter);
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                        adapterView.getItemAtPosition(pos);
+                        int tmp = a.get(pos).indexOf("와");
+                        int tmp2 = a.get(pos).indexOf("의");
+
+                        String first = a.get(pos).substring(0,tmp);
+                        String second = a.get(pos).substring(tmp+1,tmp2);
+                            Intent intent = new Intent(getActivity(), Chat_Room_v2.class);
+                            intent.putExtra("first_uid",first);
+                            intent.putExtra("second_uid",second);
+                            startActivity(intent);
+
+                    }
+                });
             }
 
             @Override
