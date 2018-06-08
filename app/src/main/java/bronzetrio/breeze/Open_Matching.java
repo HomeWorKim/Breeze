@@ -87,6 +87,10 @@ public class Open_Matching extends AppCompatActivity {
                             for (DataSnapshot second : first.getChildren()) {
                                 {
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    if(user == null){
+                                        Name.setText("You must login first!");
+                                        return;
+                                    }
                                     if(first.getKey().toString().equals(user.getUid())){
                                         profile = new Profile("","","","","",(String) second.child("sex").getValue(),
                                                 (String) second.child("major").getValue(),
