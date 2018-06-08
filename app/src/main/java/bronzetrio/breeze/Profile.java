@@ -15,11 +15,11 @@ public class Profile {
     String sex;
     String major;
     String hobby;
-    String talent;
+    String likey;
     public Profile(){
 
     }
-    public Profile(String name, String year, String month, String day, String img,String sex,String major, String hobby,String talent){
+    public Profile(String name, String year, String month, String day, String img,String sex,String major, String hobby,String likey){
         this.name = name;
         this.year = year;
         this.month = month;
@@ -28,15 +28,15 @@ public class Profile {
         this.sex = sex;
         this.major = major;
         this.hobby = hobby;
-        this.talent = talent;
+        this.likey = likey;
     }
 
     public String getTalent() {
-        return talent;
+        return likey;
     }
 
     public void setTalent(String talent) {
-        this.talent = talent;
+        this.likey = talent;
     }
 
     public String getName(){
