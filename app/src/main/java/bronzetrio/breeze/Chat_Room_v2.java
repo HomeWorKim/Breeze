@@ -115,6 +115,7 @@ public class Chat_Room_v2 extends AppCompatActivity {
                     databaseReference.child(room_name)) {
                 @Override
                 protected void populateViewHolder(ViewHolder viewHolder, Msg chatData, int position) {
+                    Log.d("chatDAta : ",chatData.getMSg());
                     viewHolder.userTv.setText(chatData.getUser());
                     viewHolder.msgTv.setText(chatData.getMSg());
                     Log.d("message33", databaseReference.child(room_name).getKey());

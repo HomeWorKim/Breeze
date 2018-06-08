@@ -139,7 +139,7 @@ public class Open_Matching extends AppCompatActivity {
                 int i = v.getId();
                 //재매칭 클릭.
                 if (i == R.id.reject) {
-                    Log.d("Size : ", Integer.toString(names.size()));
+                    Log.d("Size : ", Integer.toString(names.size())+"      "+Integer.toString(pop_idx));
                     if (names.size() == 1) {
                         Toast.makeText(getApplicationContext(), "매칭을 진행 할 수 없습니다.", Toast.LENGTH_SHORT).show();
 
@@ -153,7 +153,8 @@ public class Open_Matching extends AppCompatActivity {
                         UID.remove(pop_idx);
 
                         int random = (int) (Math.random() * (names.size() - 1));
-                        //Log.d("Size : ",Integer.toString(random));
+                        Log.d("Size : ",Integer.toString(random));
+                        pop_idx = random;
                         Name.setText(names.get(random));
                         profile_img.setImageBitmap(StringToBitMap(imges.get(random)));
                     }

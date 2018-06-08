@@ -50,6 +50,7 @@ public class Register extends AppCompatActivity {
     private ArrayAdapter spinnerAdapter4;
     private ArrayAdapter spinnerAdapter5;
     private ArrayAdapter spinnerAdapter6;
+    private ArrayAdapter spinnerAdapter7;
 
     private ArrayList list1;
     private ArrayList list2;
@@ -57,6 +58,7 @@ public class Register extends AppCompatActivity {
     private ArrayList GENDER;
     private ArrayList MAJOR;
     private ArrayList HOBBY;
+    private ArrayList TALENTS;
 
     private Spinner spinner;
     private Spinner spinner2;
@@ -64,6 +66,7 @@ public class Register extends AppCompatActivity {
     private Spinner gender;
     private Spinner major;
     private Spinner hobby;
+    private Spinner talent;
 
     private ImageView profile_img;
     final int PICTURE_REQUEST_CODE = 100;
@@ -78,6 +81,7 @@ public class Register extends AppCompatActivity {
     private String sex="";
     private String Major="";
     private String Hobby="";
+    private String Talent="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +98,7 @@ public class Register extends AppCompatActivity {
         gender = (Spinner)findViewById(bronzetrio.breeze.R.id.gender);
         major = (Spinner)findViewById(bronzetrio.breeze.R.id.major);
         hobby = (Spinner)findViewById(bronzetrio.breeze.R.id.hobby);
+        talent = (Spinner)findViewById(R.id.talent);
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -106,9 +111,11 @@ public class Register extends AppCompatActivity {
         GENDER.add("여성");
         GENDER.add("남성");
         HOBBY = new ArrayList();
+        TALENTS = new ArrayList();
         Major_Add();
         Hobby_Add();
         Day_Add(0,0,list3); //년, 월일 맞춰서 날짜 배열 리턴 다르게 해줄거임.
+        Talent_Add();
 
         //스피너 어댑터 초기화.
         spinnerAdapter = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, list1);
@@ -117,6 +124,7 @@ public class Register extends AppCompatActivity {
         spinnerAdapter4 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, GENDER);
         spinnerAdapter5 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, MAJOR);
         spinnerAdapter6 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, HOBBY);
+        spinnerAdapter7 = new ArrayAdapter(this, bronzetrio.breeze.R.layout.support_simple_spinner_dropdown_item, TALENTS);
 
         spinner.setAdapter(spinnerAdapter);
         spinner2.setAdapter(spinnerAdapter2);
@@ -124,6 +132,7 @@ public class Register extends AppCompatActivity {
         gender.setAdapter(spinnerAdapter4);
         major.setAdapter(spinnerAdapter5);
         hobby.setAdapter(spinnerAdapter6);
+        talent.setAdapter(spinnerAdapter7);
 
         //생일 중 년도 데이터 선택.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -208,6 +217,20 @@ public class Register extends AppCompatActivity {
 
             }
         });
+
+        //연예인 중 이상형 선택.
+        talent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Talent =String.valueOf(talent.getItemAtPosition(position));
+                //Toast.makeText(Register.this,"선택된 아이템 : "+Birth_Year,Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         //이미지 눌렀을 때,
         profile_img.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -407,7 +430,7 @@ public class Register extends AppCompatActivity {
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String str_Img = BitMapToString(Img);
-        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,Major,Hobby);
+        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,Major,Hobby, Talent);
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
         databaseReference.child("profile/"+currentUser.getUid()).push().setValue(profile);
 
@@ -457,5 +480,27 @@ public class Register extends AppCompatActivity {
         HOBBY.add("맛집 탐방");
         HOBBY.add("여행");
         HOBBY.add("등산");
+    }
+
+    public void Talent_Add(){
+        TALENTS.add("박보검");
+        TALENTS.add("송중기");
+        TALENTS.add("G-Dragon");
+        TALENTS.add("김수현");
+        TALENTS.add("김우빈");
+        TALENTS.add("원빈");
+        TALENTS.add("강다니엘");
+        TALENTS.add("뷔");
+        TALENTS.add("태양");
+        TALENTS.add("아이유");
+        TALENTS.add("쯔위");
+        TALENTS.add("김고은");
+        TALENTS.add("아이린");
+        TALENTS.add("태연");
+        TALENTS.add("윤아");
+        TALENTS.add("경리");
+        TALENTS.add("현아");
+        TALENTS.add("송지효");
+        TALENTS.add("슬기");
     }
 }

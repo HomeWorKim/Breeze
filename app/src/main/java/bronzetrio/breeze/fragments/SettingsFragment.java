@@ -1,13 +1,22 @@
 package bronzetrio.breeze.fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import bronzetrio.breeze.Chat_Room;
+import bronzetrio.breeze.Login;
+import bronzetrio.breeze.Open_Matching;
 import bronzetrio.breeze.R;
+import bronzetrio.breeze.Register;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +32,8 @@ public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private FirebaseAuth mAuth;
+    private Button logoutBtn;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -54,6 +65,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -64,7 +76,23 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        logoutBtn = (Button) view.findViewById(R.id.logout);
+
+        View.OnClickListener listener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                int i = v.getId();
+                if(i == R.id.logout) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(getActivity(), Login.class);
+                    startActivity(intent);
+                }
+
+            }
+        };
+        logoutBtn.setOnClickListener(listener);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
