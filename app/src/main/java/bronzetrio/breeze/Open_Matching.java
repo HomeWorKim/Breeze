@@ -36,6 +36,7 @@ public class Open_Matching extends AppCompatActivity {
     private ImageView profile_img;
     private TextView Name;
     private TextView similarity_tv;
+    private TextView major_tv;
     private boolean flag = true;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference databaseReference;
@@ -63,6 +64,7 @@ public class Open_Matching extends AppCompatActivity {
         profile_img = (ImageView) findViewById(R.id.profile_img);
         Name = (TextView) findViewById(R.id.name);
         similarity_tv = (TextView)findViewById(R.id.similarity_tv);
+        major_tv = (TextView)findViewById(R.id.major);
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference("profile");
         mAuth = FirebaseAuth.getInstance();
@@ -112,13 +114,16 @@ public class Open_Matching extends AppCompatActivity {
 
                                     String birth = year + "-" + month + "-" + day;
                                     String talent;String similarity_score;
+                                    major_tv.setText(major);
                                     try{
                                         talent=(String) second.child("talent").getValue();
                                         similarity_score = (second.child("similarity").getValue())+"%";
                                         similarity_tv.setText(talent+" 와 "+similarity_score+" 매칭");
 
+
                                         Talents.add(talent);
                                         Sim.add(similarity_score);
+
                                     }catch (NullPointerException e){
                                         Log.e(TAG,"error : "+e);
                                         Talents.add(" ");

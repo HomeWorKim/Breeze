@@ -489,7 +489,9 @@ public class ProfileFragment extends Fragment {
                                                     }
 
                                                     for(int i=0;i<similarity_arrayList.size();i++){
-                                                        if(max>similarity_arrayList.get(i)) {
+                                                        Log.d("similarity check","Check : " + similarity_arrayList.get(i) );
+                                                        if(max<similarity_arrayList.get(i)) {
+
                                                             max = similarity_arrayList.get(i);
                                                             name = refer_vector2.get(i);
                                                         }
@@ -499,6 +501,7 @@ public class ProfileFragment extends Fragment {
                                                 profile_img.setImageBitmap(bmp);
                                                 Map<String, Object> taskMap = new HashMap<>();
                                                 max = 100-(10000-10000*max)*8;
+                                                max = max<0?0.0:max;
                                                 taskMap.put("day",a);
                                                 taskMap.put("hobby",b);
                                                 taskMap.put("img",BitMapToString(bmp));
