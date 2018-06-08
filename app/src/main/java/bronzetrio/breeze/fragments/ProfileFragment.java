@@ -380,11 +380,16 @@ public class ProfileFragment extends Fragment {
                 profile_img.setImageResource(0);
                 Uri uri = data.getData();
                 ClipData clipData = data.getClipData();
-
+                Bitmap resized= null;
                 //구글 드라이브같은데서 가져오는 걸로 예상됨.
                 if(clipData != null){
                     try{
                         bmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inSampleSize = 4;
+                        int dstWidth = bmp.getWidth()/4;
+                        int dstHeight = bmp.getHeight()/4;
+                        resized = Bitmap.createScaledBitmap(bmp, dstWidth, dstHeight, true);
                     }catch(FileNotFoundException e){
                         e.printStackTrace();
                     }catch(IOException e){
@@ -397,6 +402,11 @@ public class ProfileFragment extends Fragment {
                 else if(uri != null){
                     try{
                         bmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inSampleSize = 4;
+                        int dstWidth = bmp.getWidth()/4;
+                        int dstHeight = bmp.getHeight()/4;
+                        resized = Bitmap.createScaledBitmap(bmp, dstWidth, dstHeight, true);
                     }catch(FileNotFoundException e){
                         e.printStackTrace();
                     }catch(IOException e){
@@ -404,7 +414,7 @@ public class ProfileFragment extends Fragment {
                     }
 
                     
-                    profile_img.setImageBitmap(bmp);
+                    profile_img.setImageBitmap(resized);
                 }
             }
             //사진 선택 안했을때?
@@ -503,7 +513,7 @@ public class ProfileFragment extends Fragment {
                                                 max = 100-(10000-10000*max)*8;
                                                 max = max<0?0.0:max;
                                                 taskMap.put("day",a);
-                                                taskMap.put("hobby",b);
+                                                taskMap.put("hobby",g);
                                                 taskMap.put("img",BitMapToString(bmp));
                                                 taskMap.put("major",f);
                                                 taskMap.put("month",b);
