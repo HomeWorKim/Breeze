@@ -91,6 +91,7 @@ public class ProfileFragment extends Fragment {
     private TextView Sex;
     private TextView Major;
     private TextView Hobby;
+    private TextView Talent;
     private ImageView profile_img;
 
     private FirebaseAuth mAuth;
@@ -107,7 +108,7 @@ public class ProfileFragment extends Fragment {
 
     private Button photochange_btn;
     private FirebaseVisionFaceDetectorOptions options;
-    String a="",b="",c="",d="",e="",f="",g="";
+    String a="",b="",c="",d="",e="",f="",g="",h="";
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -236,6 +237,7 @@ public class ProfileFragment extends Fragment {
                             e = (String) dataSnapshot1.child("sex").getValue();
                             f = (String) dataSnapshot1.child("major").getValue();
                             g = (String) dataSnapshot1.child("hobby").getValue();
+                            h = (String) dataSnapshot1.child("talent").getValue();
                             String str_bmp = (String)dataSnapshot1.child("img").getValue();
                             bmp = StringToBitMap(str_bmp);
                         }
@@ -247,6 +249,7 @@ public class ProfileFragment extends Fragment {
                         Sex.setText(e);
                         Major.setText(f);
                         Hobby.setText(g);
+                        Talent.setText(h);
                     }
 
                     @Override
@@ -302,6 +305,7 @@ public class ProfileFragment extends Fragment {
         Sex = (TextView)view.findViewById(R.id.sex);
         Major = (TextView)view.findViewById(R.id.major);
         Hobby = (TextView)view.findViewById(R.id.hobby);
+        Talent = (TextView)view.findViewById(R.id.talent);
 
         photochange_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -549,7 +553,7 @@ public class ProfileFragment extends Fragment {
         String hobby = Hobby.getText().toString();
         //Log.d("string2",second[0]+"  "+second[1]+"   ");
         String str_Img = BitMapToString(Img);
-        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,major,hobby);
+        Profile profile = new Profile(Name, Year, Month, Day, str_Img, sex,major,hobby, "");
         Log.d("string",Name+"  "+Name+"  "+Year+"   "+Month+"  "+Day);
         databaseReference.child("profile/"+currentUser.getUid()).push().setValue(profile);
 
