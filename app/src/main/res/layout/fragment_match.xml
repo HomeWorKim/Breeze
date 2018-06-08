@@ -1,58 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.MatchFragment">
+    tools:context=".fragments.MatchFragment"
+    android:weightSum="2"
+    android:orientation="vertical"
+    android:layout_marginBottom="40dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/mat"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Match_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
+        android:id="@+id/public_matching"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:text="Register"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="0dp"
+        android:layout_marginLeft="-5dip"
+        android:layout_marginRight="-5dip"
+        android:layout_marginTop="-5dip"
+        android:layout_marginBottom="-5dip"
+        android:text="공개 매칭\n-내가 좋아하는 연애인 닮은 사람 만나기-"
 
-    <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
-        android:text="Login"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register" />
+        android:background="@color/logo_color"
+        android:textColor="@color/background_material_light"
 
+        />
     <Button
-        android:id="@+id/chatroom"
-        android:layout_width="wrap_content"
+        android:id="@+id/private_matching"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
-        android:text="chatroom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login" />
+        android:padding="0dp"
+        android:layout_marginLeft="-5dip"
+        android:layout_marginRight="-5dip"
+        android:layout_marginTop="-5dip"
+        android:layout_marginBottom="-5dip"
+        android:text="비공개 매칭\n-누구와 만날지 아무도 몰라요-"
 
-    <Button
-        android:id="@+id/open_matching"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="open_matching"
-        app:layout_constraintStart_toStartOf="@+id/chatroom"
-        app:layout_constraintTop_toBottomOf="@+id/chatroom" />
-</android.support.constraint.ConstraintLayout>
+        android:background="@color/background_material_light"
+        android:textColor="@color/logo_color"
+        />
+
+</LinearLayout>

@@ -22,16 +22,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Open_Matching extends AppCompatActivity {
+    private static final String TAG = "Open_Matching";
+
     private Button reject;
     private Button accept;
     private ImageView profile_img;
     private TextView Name;
-
+    private TextView similarity_tv;
     private boolean flag = true;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference databaseReference;
@@ -55,6 +59,7 @@ public class Open_Matching extends AppCompatActivity {
         accept = (Button) findViewById(R.id.accept);
         profile_img = (ImageView) findViewById(R.id.profile_img);
         Name = (TextView) findViewById(R.id.name);
+        similarity_tv = (TextView)findViewById(R.id.similarity_tv);
         //database 객체 가져오기.
         databaseReference = FirebaseDatabase.getInstance().getReference("profile");
         mAuth = FirebaseAuth.getInstance();
@@ -95,6 +100,15 @@ public class Open_Matching extends AppCompatActivity {
                                     String uid = (String) first.getKey().toString();
 
                                     String birth = year + "-" + month + "-" + day;
+                                    String talent;String similarity_score;
+                                    try{
+                                        talent=(String) second.child("talent").getValue();
+                                        similarity_score = (second.child("similarity").getValue())+"%";
+                                        similarity_tv.setText(talent+" 와 "+similarity_score+" 매칭");
+                                    }catch (NullPointerException e){
+                                        Log.e(TAG,"error : "+e);
+                                    }
+
                                     names.add(name);
                                     majors.add(major);
                                     hobbys.add(hobby);
@@ -102,6 +116,7 @@ public class Open_Matching extends AppCompatActivity {
                                     sexes.add(sex);
                                     imges.add(img);
                                     UID.add(uid);
+
                                 }
                             }
                         }

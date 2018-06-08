@@ -6,12 +6,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +28,8 @@ import bronzetrio.breeze.MainActivity;
 import bronzetrio.breeze.Open_Matching;
 import bronzetrio.breeze.R;
 import bronzetrio.breeze.Register;
+
+import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +54,8 @@ public class MatchFragment extends Fragment {
     private Button register_btn;
     private Button login_btn;
     private Button chat_btn;
-    private Button open_matching_btn;
+    private Button public_matching_btn;
+    private Button private_matching_btn;
     private TextView txt;
 
     private OnFragmentInteractionListener mListener;
@@ -89,11 +98,11 @@ public class MatchFragment extends Fragment {
                 user = mAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    txt.setText(mAuth.getCurrentUser().getEmail());
+                   // txt.setText(mAuth.getCurrentUser().getEmail());
                     Log.d("tag", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
-                    txt.setText("없음");
+                    //.setText("없음");
                     Log.d("tag", "onAuthStateChanged:signed_out");
                 }
             }
@@ -106,39 +115,48 @@ public class MatchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_match, container, false);
 
-        register_btn = (Button)view.findViewById(R.id.register);
-        login_btn = (Button)view.findViewById(R.id.login);
-        chat_btn = (Button)view.findViewById(R.id.chatroom);
-        open_matching_btn = (Button)view.findViewById(R.id.open_matching);
-        txt = (TextView)view.findViewById(R.id.mat);
+
+        public_matching_btn = (Button)view.findViewById(R.id.public_matching);
+        private_matching_btn=(Button)view.findViewById(R.id.private_matching);
+
+        public_matching_btn.setAllCaps(false);
+        private_matching_btn.setAllCaps(false);
+        String text1="공개 매칭\n";
+        String text2="-내가 좋아하는 연애인 닮은 사람 만나기-";
+        SpannableString str = new SpannableString(text1+ text2);
+
+        str.setSpan(new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.textSize1)), 0, text1.length(),  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.textSize2)), text1.length(), text1.length()+text2.length(),  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        public_matching_btn.setText(str);
+
+        text1="비공개 매칭\n";
+        text2="-누구와 만날지 아무도 몰라요-";
+
+        str = new SpannableString(text1+ text2);
+
+        str.setSpan(new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.textSize1)), 0, text1.length(),  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.textSize2)), text1.length(), text1.length()+text2.length(),  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        private_matching_btn.setText(str);
 
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 int i = v.getId();
-                if(i == R.id.register) {
-                    Intent intent = new Intent(getActivity(), Register.class);
-                    startActivity(intent);
-                }
-                else if(i == R.id.login){
-                    Intent intent = new Intent(getActivity(), Login.class);
-                    startActivity(intent);
-                }
-                else if(i == R.id.chatroom){
-                    Intent intent = new Intent(getActivity(), Chat_Room.class);
-                    startActivity(intent);
-                }
-                else if(i == R.id.open_matching){
+                if(i == R.id.public_matching){
                     Intent intent = new Intent(getActivity(), Open_Matching.class);
                     startActivity(intent);
+                }else if(i==R.id.private_matching){
+                    Toast.makeText(getContext(),"Not Support",Toast.LENGTH_LONG).show();
+                    //Intent intent = new Intent(getActivity(), Open_Matching.class);
+                    //startActivity(intent);
                 }
             }
         };
-        register_btn.setOnClickListener(listener);
-        login_btn.setOnClickListener(listener);
-        chat_btn.setOnClickListener(listener);
-        open_matching_btn.setOnClickListener(listener);
 
+        public_matching_btn.setOnClickListener(listener);
+        private_matching_btn.setOnClickListener(listener);
         return view;
     }
 
