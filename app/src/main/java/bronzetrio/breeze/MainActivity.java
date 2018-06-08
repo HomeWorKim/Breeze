@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
 //        chat_btn.setOnClickListener(listener);
         AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab1, R.drawable.ic_public, R.color.colorPrimaryDark);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab1, R.drawable.ic_chat, R.color.colorPrimaryDark);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab1, R.drawable.ic_person, R.color.colorPrimaryDark);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab1, R.drawable.ic_tune, R.color.colorPrimaryDark);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab2, R.drawable.ic_chat, R.color.colorPrimaryDark);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab3, R.drawable.ic_person, R.color.colorPrimaryDark);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab4, R.drawable.ic_tune, R.color.colorPrimaryDark);
 
         bottomNavigation.addItem(item1);
         bottomNavigation.addItem(item2);
